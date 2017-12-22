@@ -4,11 +4,34 @@ import { renderModuleFactory } from '@angular/platform-server';
 import { enableProdMode } from '@angular/core';
 
 import * as express from 'express';
+import * as dotenv from 'dotenv';
+import * as mongoose from 'mongoose';
 import { join } from 'path';
 import { readFileSync } from 'fs';
+import Routes from './src/api/routes';
+import { Crontab } from './src/api/utils';
+
+// Enable dotenv configuration
+dotenv.config();
 
 // Faster server renders w/ Prod mode (dev mode never needed)
 enableProdMode();
+
+// MongoDB connection
+(<any>mongoose).Promise = global.Promise;
+mongoose.connect(process.env.MONGODB_URI, {
+  useMongoClient: true
+});
+mongoose.connection.on('error', () => {
+  console.error('MongoDB connection error. Please make sur MongoDB is running.');
+  process.exit();
+});
+mongoose.connection.on('open', () => {
+  console.log('MongoDB connection is open.');
+});
+
+// Crontab
+Crontab.executeAll();
 
 // Express server
 const app = express();
@@ -38,9 +61,8 @@ app.engine('html', ngExpressEngine({
 app.set('view engine', 'html');
 app.set('views', join(DIST_FOLDER, 'browser'));
 
-/* - Example Express Rest API endpoints -
-  app.get('/api/**', (req, res) => { });
-*/
+// Rest API
+app.use('/api/', Routes);
 
 // Server static files from /browser
 app.get('*.*', express.static(join(DIST_FOLDER, 'browser'), {
