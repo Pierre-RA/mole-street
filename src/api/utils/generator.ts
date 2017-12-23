@@ -1,17 +1,19 @@
 import { Stock } from '../../shared';
 import { Random } from './random';
+import { Text } from './text';
 
 export class Generator {
 
   constructor() {}
 
-  static getStock(): Stock {
+  static getStock(list?: Array<string>): Stock {
     const adj: string = Random.getAdjective();
     const name: string = Random.getName();
     const price: number = Random.getDecimal(10, 150);
+    list = list ? list : [];
     return {
       name: adj + ' ' + name,
-      initials: adj.slice(0, 1).toUpperCase() + name.slice(0, 1).toUpperCase(),
+      initials: Text.getUniqueInitials(adj, name, list).toUpperCase(),
       time: new Date().getTime(),
       volume: Random.getInt(10000, 1000000),
       open: price,
@@ -26,8 +28,12 @@ export class Generator {
 
   static getStockList(size: number): Array<Stock> {
     const list: Array<Stock> = [];
+    const initials: Array<string> = [];
+    let tmp: Stock;
     for (let i = 0; i < size; i++) {
-      list.push(this.getStock());
+      tmp = this.getStock(initials);
+      list.push(tmp);
+      initials.push(tmp.initials);
     }
     return list;
   }

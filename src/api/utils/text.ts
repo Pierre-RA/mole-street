@@ -5,13 +5,20 @@ export class Text {
   static getUniqueInitials(adj: string, name: string, list: Array<string>): string {
     let initials = '';
     let found = false;
+    let tmp = '';
     for (let i = 0; i < 3; i++) {
       for (let j = 0; j < 3; j++) {
-        initials = adj[i] + name[j];
+        tmp = i === 0 ? adj[0] : adj[0] + adj[i];
+        initials = tmp;
+        tmp = j === 0 ? name[0] : name[0] + name[j];
+        initials += tmp;
         if (list.indexOf(initials) === -1) {
           found = true;
           break;
         }
+      }
+      if (found) {
+        break;
       }
     }
     if (found) {
