@@ -10,7 +10,7 @@ export class Generator {
     const adj: string = Random.getAdjective();
     const name: string = Random.getName();
     const price: number = Random.getDecimal(10, 150);
-    list = list ? list : [];
+    list = list || [];
     return {
       name: adj + ' ' + name,
       initials: Text.getUniqueInitials(adj, name, list).toUpperCase(),
@@ -26,9 +26,9 @@ export class Generator {
     };
   }
 
-  static getStockList(size: number): Array<Stock> {
+  static getStockList(size: number, initials?: Array<string>): Array<Stock> {
     const list: Array<Stock> = [];
-    const initials: Array<string> = [];
+    initials = initials || [];
     let tmp: Stock;
     for (let i = 0; i < size; i++) {
       tmp = this.getStock(initials);

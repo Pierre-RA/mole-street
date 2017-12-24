@@ -20,25 +20,30 @@ router.get('/', (req: Request, res: Response) => {
 
 router.post('/random', (req: Request, res: Response) => {
   const length = req.query['length'] || 5;
-  DBStock.insertMany(Generator.getStockList(length))
+  DBStock.find().distinct('initials')
     .then(doc => {
-      return DBStock.insertMany(Evaluator.evalList(doc));
+      return DBStock.insertMany(Generator.getStockList(length, doc));
     })
     .then(doc => {
       res.json(doc);
+    })
+    .catch(err => {
+      res.status(400).json(err);
     });
 });
 
-router.get('/test', (req: Request, res: Response) => {
-  const length = req.query['length'] || 20;
-  const list = Generator.getStockList(length);
-  const list2 = Evaluator.evalList(list);
-  res.json({
-    length: length,
-    turns: 2,
-    list: list,
-    eval: list2
-  });
+router.post('/update/:id', (req: Request, res: Response) => {
+  DBStock.findOne({ _id: req.params.id })
+    .then(doc => {
+      const tmp = new DBStock(Evaluator.evalStock(doc, new Date().getTime()));
+      return tmp.save();
+    })
+    .then(doc => {
+      res.json(doc);
+    })
+    .catch(err => {
+      res.status(400).json(err);
+    });
 });
 
 export default router;

@@ -34,11 +34,11 @@ router.get('/:id', (req: Request, res: Response) => {
 });
 
 /**
- * DELETE /
- * remove all stocks
+ * DELETE /:id
+ * remove one stock
  */
-router.delete('/', (req: Request, res: Response) => {
-  DBStock.findOneAndRemove({})
+router.delete('/:id', (req: Request, res: Response) => {
+  DBStock.findOneAndRemove({ _id: req.params.id })
     .then(doc => {
       res.json(doc);
     })

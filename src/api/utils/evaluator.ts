@@ -29,15 +29,32 @@ export class Evaluator {
   }
 
   static evalDB(): void {
-    DBStock.find().sort({time: -1}).limit(1)
-      .then(doc => {
-        return DBStock.find({ time: doc[0].time });
-      })
-      .then(doc => {
+    DBStock.aggregate([{
+      $sort: { initials: 1, time: -1}
+    }, {
+      $group: {
+        _id: '$initials',
+        name: {$first: '$name'},
+        initials: {$first: '$initials'},
+        time: {$first: '$time'},
+        volume: {$first: '$volume'},
+        high: {$first: '$high'},
+        low: {$first: '$low'},
+        open: {$first: '$open'},
+        close: {$first: '$close'},
+        last: {$first: '$last'},
+        prev: {$first: '$prev'},
+        change: {$first: '$change'},
+      }
+    }])
+      .then((doc: Array<Stock>) => {
         return DBStock.insertMany(Evaluator.evalList(doc));
       })
       .then(doc => {
-        console.log('updated ' + doc.length + ' stocks.');
+        console.log(doc.length + ' have been updated.');
+      })
+      .catch(err => {
+        console.error('something wrong happened:', err);
       });
   }
 
