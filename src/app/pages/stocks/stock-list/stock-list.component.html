@@ -1,0 +1,12 @@
+<h2>List of stocks</h2>
+
+<app-template-stock [stock]="stock" [isList]="true" *ngFor="let stock of stocks">
+</app-template-stock>
+
+<div *ngIf="!loaded">
+  Loading...
+</div>
+
+<div *ngIf="message">
+  {{message}}
+</div>

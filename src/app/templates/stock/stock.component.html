@@ -1,0 +1,48 @@
+<div *ngIf="stock">
+  <h3 *ngIf="isList">
+    <a [routerLink]="[stock._id]">
+      {{stock.initials}} - {{stock.name}}
+    </a>
+  </h3>
+  <ng-container *ngIf="!isList">
+    <h2>
+      {{stock.initials}} - {{stock.name}}
+    </h2>
+    <p>
+      <a routerLink="/stocks">Back to list</a>
+    </p>
+  </ng-container>
+  <p>
+    {{stock.time | date:'long'}}
+  </p>
+  <div class="row">
+    <div class="col" [ngClass]="{'text-success': stock.change > 0, 'text-danger': stock.change < 0}">
+      {{stock.last}}
+    </div>
+    <div class="col">
+      {{stock.high}}
+    </div>
+    <div class="col">
+      {{stock.low}}
+    </div>
+    <div class="col">
+      {{stock.prev}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col" [ngClass]="{'text-success': stock.change > 0, 'text-danger': stock.change < 0}">
+      {{stock.change}}
+      <i class="fa fa-lg fa-caret-up" *ngIf="stock.change > 0"></i>
+      <i class="fa fa-lg fa-caret-down" *ngIf="stock.change < 0"></i>
+    </div>
+    <div class="col">
+      {{stock.open}}
+    </div>
+    <div class="col">
+      {{stock.close}}
+    </div>
+    <div class="col">
+      {{stock.volume}}
+    </div>
+  </div>
+</div>

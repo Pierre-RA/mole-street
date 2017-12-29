@@ -1,0 +1,9 @@
+<app-template-stock [stock]="stocks[0]"></app-template-stock>
+
+<div class="graph">
+  <canvas #canvas></canvas>
+</div>
+
+<div *ngIf="message">
+  {{message}}
+</div>

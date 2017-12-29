@@ -7,7 +7,7 @@ export class Text {
     let found = false;
     let tmp = '';
     for (let i = 0; i < 3; i++) {
-      for (let j = 0; j < 3; j++) {
+      for (let j = 0; j < 3 - i; j++) {
         tmp = i === 0 ? adj[0] : adj[0] + adj[i];
         initials = tmp;
         tmp = j === 0 ? name[0] : name[0] + name[j];

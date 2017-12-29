@@ -50,6 +50,10 @@ router.get('/last', (req: Request, res: Response) => {
     });
 });
 
+/**
+ * GET /last/:initials
+ * get latest stock value
+ */
 router.get('/last/:initials', (req: Request, res: Response) => {
   DBStock.find({ initials: req.params.initials }).sort({ time: -1 }).limit(1)
     .then(doc => {
@@ -61,11 +65,25 @@ router.get('/last/:initials', (req: Request, res: Response) => {
 });
 
 /**
- * GET /:id
- * get one stock
+ * GET /stock/:id
+ * get stock at a time from id
  */
-router.get('/:id', (req: Request, res: Response) => {
+router.get('/stock/:id', (req: Request, res: Response) => {
   DBStock.findOne({ _id: req.params.id })
+    .then(doc => {
+      res.json(doc);
+    })
+    .catch(err => {
+      res.status(400).json(err);
+    });
+});
+
+/**
+ * GET /:initials
+ * get list of values for stock :initials
+ */
+router.get('/:initials', (req: Request, res: Response) => {
+  DBStock.find({ initials: req.params.initials }).sort({ time: -1 })
     .then(doc => {
       res.json(doc);
     })
