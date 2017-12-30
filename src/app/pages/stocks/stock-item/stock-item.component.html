@@ -1,8 +1,13 @@
 <app-template-stock [stock]="stocks[0]"></app-template-stock>
 
-<div class="graph">
-  <canvas #canvas></canvas>
-</div>
+<ngx-charts-area-chart
+  [scheme]="colorScheme"
+  [results]="results"
+  gradient="true"
+  xAxis="true"
+  yAxis="true"
+  autoScale="true">
+</ngx-charts-area-chart>
 
 <div *ngIf="message">
   {{message}}

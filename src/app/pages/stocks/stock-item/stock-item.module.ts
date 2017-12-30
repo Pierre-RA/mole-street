@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+
 import { StockModule } from '../../../templates/stock/stock.module';
 import { StockItemComponent } from './stock-item.component';
 import { StockService } from '../stock.service';
@@ -10,6 +12,7 @@ import { StockService } from '../stock.service';
   imports: [
     CommonModule,
     StockModule,
+    NgxChartsModule,
     RouterModule.forChild([
       { path: '', component: StockItemComponent }
     ])

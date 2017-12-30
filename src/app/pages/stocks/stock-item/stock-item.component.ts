@@ -1,7 +1,7 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { Stock } from '../../../../shared';
+import { Chart, ChartData, Stock } from '../../../../shared';
 import { StockService } from '../stock.service';
 
 @Component({
@@ -12,9 +12,13 @@ import { StockService } from '../stock.service';
 export class StockItemComponent implements OnInit {
 
   stocks: Array<Stock>;
+  results: Array<Chart>;
   loaded: boolean;
   message: string;
-  @ViewChild('canvas') canvasRef: ElementRef;
+
+  colorScheme = {
+    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
+  };
 
   constructor(
     private stockService: StockService,
@@ -26,8 +30,7 @@ export class StockItemComponent implements OnInit {
       this.stockService.getStock(this.activatedRoute.snapshot.params['id']).subscribe(data => {
         this.loaded = true;
         this.stocks = data;
-        this.drawGraph();
-        console.log(this.stocks);
+        this.parseStocks();
       }, err => {
         this.loaded = true;
         this.message = 'Cannot fetch data.';
@@ -35,14 +38,16 @@ export class StockItemComponent implements OnInit {
     }
   }
 
-  drawGraph() {
-    console.log(
-      'draw graph',
-      this.canvasRef.nativeElement.scrollHeight,
-      this.canvasRef.nativeElement.scrollWidth
-    );
-    const height = this.canvasRef.nativeElement.scrollHeight;
-    const width = this.canvasRef.nativeElement.scrollWidth;
+  parseStocks() {
+    this.results = [{
+      name: 'test',
+      series: this.stocks.reverse().map(data => {
+        return {
+          name: new Date(data.time).getHours() + ':' + new Date(data.time).getMinutes(),
+          value: data.last
+        };
+      })
+    }];
   }
 
 }
