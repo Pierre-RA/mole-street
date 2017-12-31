@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { DatePipe } from '@angular/common';
 
 import { Chart, ChartData, Stock } from '../../../../shared';
 import { StockService } from '../stock.service';
@@ -17,12 +18,13 @@ export class StockItemComponent implements OnInit {
   message: string;
 
   colorScheme = {
-    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
+    domain: ['#2288ee']
   };
 
   constructor(
     private stockService: StockService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private datePipe: DatePipe
   ) { }
 
   ngOnInit() {
@@ -40,14 +42,18 @@ export class StockItemComponent implements OnInit {
 
   parseStocks() {
     this.results = [{
-      name: 'test',
-      series: this.stocks.reverse().map(data => {
+      name: this.stocks[0].initials || 'N/A',
+      series: this.stocks.slice().reverse().map(data => {
         return {
           name: new Date(data.time).getHours() + ':' + new Date(data.time).getMinutes(),
           value: data.last
         };
       })
     }];
+  }
+
+  xAxisTickFormatting(value) {
+    return this.datePipe.transform(value, 'short');
   }
 
 }

@@ -1,4 +1,4 @@
-<app-template-stock [stock]="stocks[0]"></app-template-stock>
+<app-template-stock [stock]="stocks[0]" *ngIf="stocks && stocks[0]"></app-template-stock>
 
 <ngx-charts-area-chart
   [scheme]="colorScheme"
@@ -6,7 +6,10 @@
   gradient="true"
   xAxis="true"
   yAxis="true"
-  autoScale="true">
+  [yScaleMin]="results[0].low - 1"
+  [yScaleMax]="results[0].high + 1"
+  [xAxisTickFormatting]="xAxisFormat"
+  autoScale="true" *ngIf="results && results[0]">
 </ngx-charts-area-chart>
 
 <div *ngIf="message">

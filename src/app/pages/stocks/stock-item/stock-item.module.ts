@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 import { NgxChartsModule } from '@swimlane/ngx-charts';
@@ -18,6 +18,6 @@ import { StockService } from '../stock.service';
     ])
   ],
   declarations: [StockItemComponent],
-  providers: [StockService]
+  providers: [StockService, DatePipe]
 })
 export class StockItemModule { }
