@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, UpperCasePipe } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 import { StockComponent } from './stock.component';
@@ -10,6 +10,7 @@ import { StockComponent } from './stock.component';
     RouterModule
   ],
   declarations: [StockComponent],
-  exports: [StockComponent]
+  exports: [StockComponent],
+  providers: [UpperCasePipe]
 })
 export class StockModule { }

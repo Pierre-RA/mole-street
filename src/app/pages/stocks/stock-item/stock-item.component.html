@@ -1,17 +1,20 @@
-<app-template-stock [stock]="stocks[0]" *ngIf="stocks && stocks[0]"></app-template-stock>
+<div class="container">
+  <app-template-stock [stock]="stocks[0]" *ngIf="stocks && stocks[0]"></app-template-stock>
 
-<ngx-charts-area-chart
-  [scheme]="colorScheme"
-  [results]="results"
-  gradient="true"
-  xAxis="true"
-  yAxis="true"
-  [yScaleMin]="results[0].low - 1"
-  [yScaleMax]="results[0].high + 1"
-  [xAxisTickFormatting]="xAxisFormat"
-  autoScale="true" *ngIf="results && results[0]">
-</ngx-charts-area-chart>
+  <ngx-charts-area-chart
+    [scheme]="colorScheme"
+    [results]="results"
+    gradient="true"
+    xAxis="true"
+    yAxis="true"
+    [yScaleMin]="results[0].low - 1"
+    [yScaleMax]="results[0].high + 1"
+    [xAxisTickFormatting]="xAxisFormat"
+    autoScale="true" *ngIf="results && results[0]">
+  </ngx-charts-area-chart>
 
-<div *ngIf="message">
-  {{message}}
+  <div *ngIf="message">
+    {{message}}
+  </div>
 </div>
+
