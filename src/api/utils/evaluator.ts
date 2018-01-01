@@ -9,10 +9,10 @@ export class Evaluator {
     tmp.time = timeRef ? timeRef : tmp.time;
     tmp.change = Random.getDouble(0, 0.2) - 0.1;
     if (tmp.prev !== 0 && tmp.last > tmp.prev) {
-      tmp.change = Random.getDouble(0, 0.2) - 0.09;
+      tmp.change = getClimb(0.85);
     }
     if (tmp.prev !== 0 && tmp.last < tmp.prev) {
-      tmp.change = Random.getDouble(0, 0.2) - 0.11;
+      tmp.change = getClimb(0.15);
     }
     tmp.change = +tmp.change.toFixed(2);
     tmp.prev = tmp.last;
@@ -58,6 +58,15 @@ export class Evaluator {
       });
   }
 
+}
+
+function getClimb(cliff?: number) {
+  const luck = Math.random();
+  cliff = cliff || 0.85;
+  if (luck < cliff) {
+    return Random.getDouble(0, 0.2) - 0.05;
+  }
+  return Random.getDouble(0, 0.2) - 0.15;
 }
 
 function cloneStock(stock: Stock) {
