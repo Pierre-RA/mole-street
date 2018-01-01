@@ -21,7 +21,7 @@ export class StockComponent implements OnInit {
   }
 
   getChange() {
-    const change = (1 - this.stock.last / this.stock.prev ) * 100;
+    const change = (this.stock.last / this.stock.prev - 1) * 100;
     return change > 0 ? '+' + change.toFixed(2) + '%' : change.toFixed(2) + '%';
   }
 
