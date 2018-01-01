@@ -1,4 +1,4 @@
-export interface Portfolio {
+export interface Asset {
   initials: string;
   amount: number;
   price: number;

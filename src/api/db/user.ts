@@ -1,6 +1,6 @@
 import * as Mongoose from 'mongoose';
 
-import { User, Portfolio } from '../../shared';
+import { User } from '../../shared';
 
 interface UserModel extends User, Mongoose.Document {}
 
