@@ -12,6 +12,7 @@ export class StockComponent implements OnInit {
 
   @Input('stock') stock: Stock;
   @Input('isList') isList: boolean;
+  @Input('small') small: boolean;
 
   constructor(
     private router: Router

@@ -41,3 +41,21 @@
   box-shadow: 0 0 10px rgba(0,0,0,0.4);
 }
 
+.template-stock-small {
+  display: inline-block;
+  color: rgb(80,80,80);
+  cursor: pointer;
+  p {
+    margin: 0;
+    padding: 0 10px;
+  }
+  span {
+    font-size: 2em;
+  }
+}
+
+.template-stock-small:hover {
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  border-radius: 5px;
+}
+

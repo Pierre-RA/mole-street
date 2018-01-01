@@ -1,4 +1,4 @@
-<div *ngIf="stock" class="template-stock" [ngClass]="{'stock-pad': isList}">
+<div *ngIf="stock && !small" class="template-stock" [ngClass]="{'stock-pad': isList}">
   <ng-container *ngIf="!isList">
     <h2>
       {{stock.name | uppercase }} ({{stock.initials}})
@@ -59,4 +59,20 @@
       </div>
     </div>
   </div>
+</div>
+
+<div *ngIf="stock && small"
+  (click)="go()"
+  class="template-stock-small"
+  [ngClass]="{'text-success': stock.change > 0, 'text-danger': stock.change < 0}">
+  <p>
+    {{stock.initials}}
+    <span>{{stock.last}}</span>
+  </p>
+  <p>
+    {{stock.change}}
+    <i class="fa fa-lg fa-caret-up" *ngIf="stock.change > 0"></i>
+    <i class="fa fa-lg fa-caret-down" *ngIf="stock.change < 0"></i>
+    ({{getChange()}})
+  </p>
 </div>

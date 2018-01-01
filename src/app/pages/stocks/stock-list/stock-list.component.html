@@ -1,9 +1,19 @@
 <div class="container">
   <h2>List of stocks</h2>
+  <p>
+    <a routerLink="/">Back to home</a>
+  </p>
 
   <app-template-stock
     [stock]="stock"
     [isList]="true"
+    *ngFor="let stock of stocks">
+  </app-template-stock>
+  
+  <app-template-stock
+    [stock]="stock"
+    [isList]="true"
+    small="true"
     *ngFor="let stock of stocks">
   </app-template-stock>
 
