@@ -35,13 +35,13 @@ export class Evaluator {
       $group: {
         _id: '$initials',
         name: {$first: '$name'},
+        type: {$first: '$type'},
         initials: {$first: '$initials'},
         time: {$first: '$time'},
         volume: {$first: '$volume'},
         high: {$first: '$high'},
         low: {$first: '$low'},
         open: {$first: '$open'},
-        close: {$first: '$close'},
         last: {$first: '$last'},
         prev: {$first: '$prev'},
         change: {$first: '$change'},
@@ -73,12 +73,12 @@ function cloneStock(stock: Stock) {
   return {
     name: stock.name,
     initials: stock.initials,
+    type: stock.type,
     time: new Date().getTime(),
     volume: stock.volume,
     high: stock.high,
     low: stock.low,
     open: stock.open,
-    close: stock.close,
     last: stock.last,
     prev: stock.prev,
     change: stock.change

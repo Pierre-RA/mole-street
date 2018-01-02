@@ -8,16 +8,18 @@ export class Generator {
 
   static getStock(list?: Array<string>): Stock {
     const adj: string = Random.getAdjective();
-    const name: string = Random.getName();
+    const type: string = Random.getType();
+    const name: string = Random.getName(type);
+    const suffix: string = Random.getSuffix();
     const price: number = Random.getDecimal(10, 150);
     list = list || [];
     return {
-      name: adj + ' ' + name,
+      name: adj + ' ' + name + suffix,
       initials: Text.getUniqueInitials(adj, name, list).toUpperCase(),
       time: new Date().getTime(),
-      volume: Random.getInt(10000, 1000000),
+      type: type,
+      volume: Random.getInt(1000, 10000) * 100,
       open: price,
-      close: 0,
       high: price,
       low: price,
       last: price,
@@ -29,6 +31,7 @@ export class Generator {
   static getStockList(size: number, initials?: Array<string>): Array<Stock> {
     const list: Array<Stock> = [];
     initials = initials || [];
+    console.log(initials);
     let tmp: Stock;
     for (let i = 0; i < size; i++) {
       tmp = this.getStock(initials);
