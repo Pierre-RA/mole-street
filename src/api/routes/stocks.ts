@@ -79,6 +79,20 @@ router.get('/stock/:id', (req: Request, res: Response) => {
 });
 
 /**
+ * GET /sectors
+ * get list of sectors
+ */
+router.get('/sectors', (req: Request, res: Response) => {
+  DBStock.find().distinct('type')
+    .then(doc => {
+      res.json(doc);
+    })
+    .catch(err => {
+      res.status(400).json(err);
+    });
+});
+
+/**
  * GET /:initials
  * get list of values for stock :initials
  */
