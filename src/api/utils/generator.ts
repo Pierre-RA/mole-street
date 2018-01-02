@@ -15,7 +15,7 @@ export class Generator {
     list = list || [];
     return {
       name: adj + ' ' + name + suffix,
-      initials: Text.getUniqueInitials(adj, name, list).toUpperCase(),
+      initials: Text.getUniqueInitials(adj + ' ' + name, list),
       time: new Date().getTime(),
       type: type,
       volume: Random.getInt(1000, 10000) * 100,

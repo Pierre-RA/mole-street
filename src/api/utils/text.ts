@@ -2,27 +2,24 @@ import { Stock } from '../../shared';
 
 export class Text {
 
-  static getUniqueInitials(adj: string, name: string, list: Array<string>): string {
-    let initials = '';
-    let found = false;
-    let tmp = '';
-    for (let i = 0; i < 3; i++) {
-      for (let j = 0; j < 3 - i; j++) {
-        tmp = i === 0 ? adj[0] : adj[0] + adj[i];
-        initials = tmp;
-        tmp = j === 0 ? name[0] : name[0] + name[j];
-        initials += tmp;
-        if (list.indexOf(initials) === -1) {
-          found = true;
-          break;
-        }
-      }
-      if (found) {
-        break;
-      }
+  static getUniqueInitials(name: string, list: Array<string>): string {
+    const split = name.split(' ');
+    const primary = split.map(word => word.slice(0, 1)).join('');
+    const alternate = split.map(word => word.slice(1, 2)).join('');
+    let result: Array<string>;
+    result = [];
+
+    if (list.length < 20) {
+      result.push(primary);
     }
-    if (found) {
-      return initials;
+    result.push(primary[0] + alternate[0] + primary.slice(1));
+    result.push(primary.slice(0, 2) + alternate[1] + primary.slice(2));
+    result.push(primary[0] + alternate.slice(0, 1) + primary.slice(2));
+
+    for (let i = 0; i < result.length; i++) {
+      if (list.indexOf(result[i]) === -1) {
+        return result[i].toUpperCase();
+      }
     }
     return null;
   }
