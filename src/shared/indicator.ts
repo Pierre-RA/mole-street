@@ -8,5 +8,4 @@ export interface Indicator {
   change: number;
   high: number;
   low: number;
-  stocks: Array<Stock>;
 }

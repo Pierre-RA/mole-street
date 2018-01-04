@@ -11,8 +11,7 @@ export let indicatorSchema = new Mongoose.Schema({
   last: Number,
   change: Number,
   high: Number,
-  low: Number,
-  stocks: [{ type: Mongoose.Schema.Types.ObjectId, ref: 'Stock' }],
+  low: Number
 });
 
 export let DBIndicator = Mongoose.model<IndicatorModel>('Indicator', indicatorSchema);

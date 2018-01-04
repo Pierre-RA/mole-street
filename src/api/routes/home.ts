@@ -18,8 +18,11 @@ router.get('/', (req: Request, res: Response) => {
   });
 });
 
+/**
+ * POST /init
+ */
 router.post('/random', (req: Request, res: Response) => {
-  const length = req.query['length'] || 5;
+  const length = req.query['length'] || 50;
   DBStock.find().distinct('initials')
     .then(doc => {
       return DBStock.insertMany(Generator.getStockList(length, doc));
@@ -32,18 +35,19 @@ router.post('/random', (req: Request, res: Response) => {
     });
 });
 
-router.post('/update/:id', (req: Request, res: Response) => {
-  DBStock.findOne({ _id: req.params.id })
-    .then(doc => {
-      const tmp = new DBStock(Evaluator.evalStock(doc, new Date().getTime()));
-      return tmp.save();
-    })
-    .then(doc => {
-      res.json(doc);
-    })
-    .catch(err => {
-      res.status(400).json(err);
-    });
-});
+// TODO: remove this route
+// router.post('/update/:id', (req: Request, res: Response) => {
+//   DBStock.findOne({ _id: req.params.id })
+//     .then(doc => {
+//       const tmp = new DBStock(Evaluator.evalStock(doc, new Date().getTime()));
+//       return tmp.save();
+//     })
+//     .then(doc => {
+//       res.json(doc);
+//     })
+//     .catch(err => {
+//       res.status(400).json(err);
+//     });
+// });
 
 export default router;

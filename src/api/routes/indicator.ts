@@ -34,8 +34,7 @@ router.get('/last', (req: Request, res: Response) => {
       high: {$first: '$high'},
       low: {$first: '$low'},
       last: {$first: '$last'},
-      change: {$first: '$change'},
-      stocks: {$first: '$stocks'}
+      change: {$first: '$change'}
     }
   }])
     .then(doc => {

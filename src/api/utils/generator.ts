@@ -1,4 +1,4 @@
-import { Stock } from '../../shared';
+import { Indicator, Stock } from '../../shared';
 import { Random } from './random';
 import { Text } from './text';
 
@@ -31,7 +31,6 @@ export class Generator {
   static getStockList(size: number, initials?: Array<string>): Array<Stock> {
     const list: Array<Stock> = [];
     initials = initials || [];
-    console.log(initials);
     let tmp: Stock;
     for (let i = 0; i < size; i++) {
       tmp = this.getStock(initials);
@@ -39,5 +38,24 @@ export class Generator {
       initials.push(tmp.initials);
     }
     return list;
+  }
+
+  static getIndicator(name: string, short: string): Indicator {
+    return {
+      name: name,
+      short: short,
+      time: new Date().getTime(),
+      last: 100,
+      change: 0,
+      high: 100,
+      low: 100
+    };
+  }
+
+  static getBasicIndicators(): Array<Indicator> {
+    let result: Array<Indicator>;
+    result = [];
+    result.push(this.getIndicator('Mole Street All Stocks Index', 'MP-ALL'));
+    return result;
   }
 }
