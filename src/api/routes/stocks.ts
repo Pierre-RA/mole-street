@@ -21,6 +21,10 @@ router.get('/', (req: Request, res: Response) => {
     hours = 8;
     quarter = 0;
   }
+  if (hours > 16) {
+    hours = 16;
+    quarter = 3;
+  }
   const projection = '_id name symbol date hours.' + hours + '.' + quarter;
   DBStock.find({ date: date }, projection)
     .then(doc => {

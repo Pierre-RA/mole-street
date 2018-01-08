@@ -14,11 +14,11 @@ export class StockService {
   constructor(private http: HttpClient) { }
 
   getLast(): Observable<Array<DailyQuote>> {
-    return this.http.get<Array<DailyQuote>>(this.api + '/stocks/last');
+    return this.http.get<Array<DailyQuote>>(this.api + '/stocks');
   }
 
-  getStock(initials: string): Observable<Array<DailyQuote>> {
-    return this.http.get<Array<DailyQuote>>(this.api + '/stocks/' + initials);
+  getStock(symbol: string): Observable<Array<DailyQuote>> {
+    return this.http.get<Array<DailyQuote>>(this.api + '/stocks/' + symbol);
   }
 
 }
