@@ -1,4 +1,5 @@
 import { Request, Response, Router } from 'express';
+import * as moment from 'moment';
 
 import { Generator, Evaluator } from '../utils';
 import { DBStock } from '../db';
@@ -10,7 +11,18 @@ const router = Router();
  * get list of stocks
  */
 router.get('/', (req: Request, res: Response) => {
-  DBStock.find({})
+  let date = moment().startOf('day');
+  let hours = new Date().getHours();
+  let quarter: number = Math.floor(date.get('minutes').valueOf() / 15);
+  if (req.query.date) {
+    date = moment(req.query.date).startOf('day');
+  }
+  if (hours > 16 || hours < 8) {
+    hours = 8;
+    quarter = 0;
+  }
+  const projection = '_id name symbol date hours.' + hours + '.' + quarter;
+  DBStock.find({ date: date }, projection)
     .then(doc => {
       res.json(doc);
     })
@@ -20,42 +32,22 @@ router.get('/', (req: Request, res: Response) => {
 });
 
 /**
- * GET /last
- * get list of last values
+ * GET /by-indicator/:symbol
+ * Return list of stocks from indicator :symbol
  */
-router.get('/last', (req: Request, res: Response) => {
-  DBStock.aggregate([{
-    $sort: { initials: 1, time: -1}
-  }, {
-    $group: {
-      _id: '$initials',
-      name: {$first: '$name'},
-      type: {$first: '$type'},
-      initials: {$first: '$initials'},
-      time: {$first: '$time'},
-      volume: {$first: '$volume'},
-      high: {$first: '$high'},
-      low: {$first: '$low'},
-      open: {$first: '$open'},
-      last: {$first: '$last'},
-      prev: {$first: '$prev'},
-      change: {$first: '$change'},
-    }
-  }])
-    .then(doc => {
-      res.json(doc);
-    })
-    .catch(err => {
-      res.status(400).json(err);
-    });
-});
-
-/**
- * GET /last/:initials
- * get latest stock value
- */
-router.get('/last/:initials', (req: Request, res: Response) => {
-  DBStock.find({ initials: req.params.initials }).sort({ time: -1 }).limit(1)
+router.get('/by-indicator/:symbol', (req: Request, res: Response) => {
+  let date = moment().startOf('day');
+  let hours = new Date().getHours();
+  let quarter: number = Math.floor(date.get('minutes').valueOf() / 15);
+  if (req.query.date) {
+    date = moment(req.query.date).startOf('day');
+  }
+  if (hours > 16 || hours < 8) {
+    hours = 8;
+    quarter = 0;
+  }
+  const projection = '_id name symbol date hours.' + hours + '.' + quarter;
+  DBStock.find({ date: date, indicators: req.params.symbol }, projection)
     .then(doc => {
       res.json(doc);
     })
@@ -79,25 +71,11 @@ router.get('/stock/:id', (req: Request, res: Response) => {
 });
 
 /**
- * GET /sectors
- * get list of sectors
+ * GET /:symbol
+ * get list of values for stock :symbol
  */
-router.get('/sectors', (req: Request, res: Response) => {
-  DBStock.find().distinct('type')
-    .then(doc => {
-      res.json(doc);
-    })
-    .catch(err => {
-      res.status(400).json(err);
-    });
-});
-
-/**
- * GET /:initials
- * get list of values for stock :initials
- */
-router.get('/:initials', (req: Request, res: Response) => {
-  DBStock.find({ initials: req.params.initials }).sort({ time: -1 })
+router.get('/:symbol', (req: Request, res: Response) => {
+  DBStock.find({ symbol: req.params.symbol }).sort({ time: -1 })
     .then(doc => {
       res.json(doc);
     })

@@ -1,8 +1,8 @@
 import { Request, Response, Router } from 'express';
 
 import { Generator, Evaluator } from '../utils';
-import { Stock } from '../../shared';
-import { DBStock } from '../db/stock';
+import { DailyQuote, DailyIndicator } from '../../shared';
+import { DBIndicator, DBStock } from '../db';
 const pkg = require('../../../package.json');
 
 const router = Router();
@@ -19,11 +19,18 @@ router.get('/', (req: Request, res: Response) => {
 });
 
 /**
- * POST /init
+ * POST /random
+ * Add random stocks to the list
  */
 router.post('/random', (req: Request, res: Response) => {
   const length = req.query['length'] || 50;
-  DBStock.find().distinct('initials')
+  DBIndicator.insertMany(Generator.getBasicIndicators())
+    .catch(err => {
+      return true;
+    })
+    .then(doc => {
+      return DBStock.find().distinct('initials');
+    })
     .then(doc => {
       return DBStock.insertMany(Generator.getStockList(length, doc));
     })

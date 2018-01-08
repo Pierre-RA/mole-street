@@ -1,44 +1,359 @@
 import * as Mongoose from 'mongoose';
 
-import { Stock } from '../../shared';
+import { DailyQuote } from '../../shared';
 
-interface StockModel extends Stock, Mongoose.Document {
-  findLast(): Array<Stock>;
-}
+interface StockModel extends DailyQuote, Mongoose.Document {}
 
 export let stockSchema = new Mongoose.Schema({
   name: String,
-  initials: { type: String, index: true },
-  time: { type: Number, index: true },
-  type: String,
-  volume: Number,
-  high: Number,
-  low: Number,
-  open: Number,
-  last: Number,
-  prev: Number,
-  change: Number
+  symbol: String,
+  date: { type: Date, default: Date.now },
+  indicators: [String],
+  amount: Number,
+  hours: {
+    8: {
+      0: {
+        volume: Number,
+        open: Number,
+        high: Number,
+        low: Number,
+        last: Number,
+        prev: Number,
+        change: Number
+      },
+      1: {
+        volume: Number,
+        open: Number,
+        high: Number,
+        low: Number,
+        last: Number,
+        prev: Number,
+        change: Number
+      },
+      2: {
+        volume: Number,
+        open: Number,
+        high: Number,
+        low: Number,
+        last: Number,
+        prev: Number,
+        change: Number
+      },
+      3: {
+        volume: Number,
+        open: Number,
+        high: Number,
+        low: Number,
+        last: Number,
+        prev: Number,
+        change: Number
+      }
+    },
+    9: {
+      0: {
+        volume: Number,
+        open: Number,
+        high: Number,
+        low: Number,
+        last: Number,
+        prev: Number,
+        change: Number
+      },
+      1: {
+        volume: Number,
+        open: Number,
+        high: Number,
+        low: Number,
+        last: Number,
+        prev: Number,
+        change: Number
+      },
+      2: {
+        volume: Number,
+        open: Number,
+        high: Number,
+        low: Number,
+        last: Number,
+        prev: Number,
+        change: Number
+      },
+      3: {
+        volume: Number,
+        open: Number,
+        high: Number,
+        low: Number,
+        last: Number,
+        prev: Number,
+        change: Number
+      }
+    },
+    10: {
+      0: {
+        volume: Number,
+        open: Number,
+        high: Number,
+        low: Number,
+        last: Number,
+        prev: Number,
+        change: Number
+      },
+      1: {
+        volume: Number,
+        open: Number,
+        high: Number,
+        low: Number,
+        last: Number,
+        prev: Number,
+        change: Number
+      },
+      2: {
+        volume: Number,
+        open: Number,
+        high: Number,
+        low: Number,
+        last: Number,
+        prev: Number,
+        change: Number
+      },
+      3: {
+        volume: Number,
+        open: Number,
+        high: Number,
+        low: Number,
+        last: Number,
+        prev: Number,
+        change: Number
+      }
+    },
+    11: {
+      0: {
+        volume: Number,
+        open: Number,
+        high: Number,
+        low: Number,
+        last: Number,
+        prev: Number,
+        change: Number
+      },
+      1: {
+        volume: Number,
+        open: Number,
+        high: Number,
+        low: Number,
+        last: Number,
+        prev: Number,
+        change: Number
+      },
+      2: {
+        volume: Number,
+        open: Number,
+        high: Number,
+        low: Number,
+        last: Number,
+        prev: Number,
+        change: Number
+      },
+      3: {
+        volume: Number,
+        open: Number,
+        high: Number,
+        low: Number,
+        last: Number,
+        prev: Number,
+        change: Number
+      }
+    },
+    12: {
+      0: {
+        volume: Number,
+        open: Number,
+        high: Number,
+        low: Number,
+        last: Number,
+        prev: Number,
+        change: Number
+      },
+      1: {
+        volume: Number,
+        open: Number,
+        high: Number,
+        low: Number,
+        last: Number,
+        prev: Number,
+        change: Number
+      },
+      2: {
+        volume: Number,
+        open: Number,
+        high: Number,
+        low: Number,
+        last: Number,
+        prev: Number,
+        change: Number
+      },
+      3: {
+        volume: Number,
+        open: Number,
+        high: Number,
+        low: Number,
+        last: Number,
+        prev: Number,
+        change: Number
+      }
+    },
+    13: {
+      0: {
+        volume: Number,
+        open: Number,
+        high: Number,
+        low: Number,
+        last: Number,
+        prev: Number,
+        change: Number
+      },
+      1: {
+        volume: Number,
+        open: Number,
+        high: Number,
+        low: Number,
+        last: Number,
+        prev: Number,
+        change: Number
+      },
+      2: {
+        volume: Number,
+        open: Number,
+        high: Number,
+        low: Number,
+        last: Number,
+        prev: Number,
+        change: Number
+      },
+      3: {
+        volume: Number,
+        open: Number,
+        high: Number,
+        low: Number,
+        last: Number,
+        prev: Number,
+        change: Number
+      }
+    },
+    14: {
+      0: {
+        volume: Number,
+        open: Number,
+        high: Number,
+        low: Number,
+        last: Number,
+        prev: Number,
+        change: Number
+      },
+      1: {
+        volume: Number,
+        open: Number,
+        high: Number,
+        low: Number,
+        last: Number,
+        prev: Number,
+        change: Number
+      },
+      2: {
+        volume: Number,
+        open: Number,
+        high: Number,
+        low: Number,
+        last: Number,
+        prev: Number,
+        change: Number
+      },
+      3: {
+        volume: Number,
+        open: Number,
+        high: Number,
+        low: Number,
+        last: Number,
+        prev: Number,
+        change: Number
+      }
+    },
+    15: {
+      0: {
+        volume: Number,
+        open: Number,
+        high: Number,
+        low: Number,
+        last: Number,
+        prev: Number,
+        change: Number
+      },
+      1: {
+        volume: Number,
+        open: Number,
+        high: Number,
+        low: Number,
+        last: Number,
+        prev: Number,
+        change: Number
+      },
+      2: {
+        volume: Number,
+        open: Number,
+        high: Number,
+        low: Number,
+        last: Number,
+        prev: Number,
+        change: Number
+      },
+      3: {
+        volume: Number,
+        open: Number,
+        high: Number,
+        low: Number,
+        last: Number,
+        prev: Number,
+        change: Number
+      }
+    },
+    16: {
+      0: {
+        volume: Number,
+        open: Number,
+        high: Number,
+        low: Number,
+        last: Number,
+        prev: Number,
+        change: Number
+      },
+      1: {
+        volume: Number,
+        open: Number,
+        high: Number,
+        low: Number,
+        last: Number,
+        prev: Number,
+        change: Number
+      },
+      2: {
+        volume: Number,
+        open: Number,
+        high: Number,
+        low: Number,
+        last: Number,
+        prev: Number,
+        change: Number
+      },
+      3: {
+        volume: Number,
+        open: Number,
+        high: Number,
+        low: Number,
+        last: Number,
+        prev: Number,
+        change: Number
+      }
+    }
+  }
 });
 
-stockSchema.statics.findLast = function() {
-  return this.model('Stock').aggregate([{
-    $sort: { initials: 1, time: -1}
-  }, {
-    $group: {
-      _id: '$initials',
-      name: {$first: '$name'},
-      initials: {$first: '$initials'},
-      type: {$first: '$type'},
-      time: {$first: '$time'},
-      volume: {$first: '$volume'},
-      high: {$first: '$high'},
-      low: {$first: '$low'},
-      open: {$first: '$open'},
-      last: {$first: '$last'},
-      prev: {$first: '$prev'},
-      change: {$first: '$change'},
-    }
-  }]);
-};
-
-export let DBStock = Mongoose.model<StockModel>('Stock', stockSchema);
+export let DBStock = Mongoose.model<StockModel>('stock', stockSchema);

@@ -23,11 +23,11 @@ mongoose.connect(process.env.MONGODB_URI, {
   useMongoClient: true
 });
 mongoose.connection.on('error', () => {
-  console.error('MongoDB connection error. Please make sur MongoDB is running.');
+  console.error('*** MongoDB *** connection error. Please make sur MongoDB is running.');
   process.exit();
 });
 mongoose.connection.on('open', () => {
-  console.log('MongoDB connection is open.');
+  console.log('*** MongoDB *** connection is open.');
 });
 
 // Crontab
@@ -76,5 +76,5 @@ app.get('*', (req, res) => {
 
 // Start up the Node server
 app.listen(PORT, () => {
-  console.log(`Node Express server listening on http://localhost:${PORT}`);
+  console.log(`*** Express *** server listening on http://localhost:${PORT}`);
 });

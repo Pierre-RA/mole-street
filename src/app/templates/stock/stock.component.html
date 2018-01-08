@@ -1,7 +1,7 @@
 <div *ngIf="stock && !small" class="template-stock" [ngClass]="{'stock-pad': isList}">
   <ng-container *ngIf="!isList">
     <h2>
-      {{stock.name | uppercase }} ({{stock.initials}})
+      {{stock.name | uppercase }} ({{stock.symbol}})
     </h2>
     <p>
       <a routerLink="/stocks">Back to list</a>
@@ -10,28 +10,28 @@
 
   <div class="stock-title" (click)="go()">
     <p class="stock-name">
-      {{stock.name | uppercase }} ({{stock.initials}})
+      {{stock.name | uppercase }} ({{stock.symbol}})
     </p>
     <p class="stock-last">
-      {{stock.last}}
-      <span [ngClass]="{'text-success': stock.change > 0, 'text-danger': stock.change < 0}">
-        {{stock.change}}
-        <i class="fa fa-lg fa-caret-up" *ngIf="stock.change > 0"></i>
-        <i class="fa fa-lg fa-caret-down" *ngIf="stock.change < 0"></i>
+      {{last.last}}
+      <span [ngClass]="{'text-success': last.change > 0, 'text-danger': last.change < 0}">
+        {{last.change}}
+        <i class="fa fa-lg fa-caret-up" *ngIf="last.change > 0"></i>
+        <i class="fa fa-lg fa-caret-down" *ngIf="last.change < 0"></i>
         ({{getChange()}})
       </span>
     </p>
     <p>
-      Last Trade Time: {{stock.time | date:'medium'}}
+      Last Trade Time: {{lastTime | date:'medium'}}
     </p>
     <div class="row stock-table" *ngIf="!isList">
       <div class="col-xs-6 col-sm-4 col-md-3">
         <span>Last</span>
-        {{stock.last}}
+        {{last.last}}
       </div>
       <div class="col-xs-6 col-sm-4 col-md-3">
         <span>Change</span>
-        {{stock.change}}
+        {{last.change}}
       </div>
       <div class="col-xs-6 col-sm-4 col-md-3">
         <span>Change %</span>
@@ -39,23 +39,23 @@
       </div>
       <div class="col-xs-6 col-sm-4 col-md-3">
         <span>Volume</span>
-        {{stock.volume}}
+        {{last.volume}}
       </div>
       <div class="col-xs-6 col-sm-4 col-md-3">
         <span>Open</span>
-        {{stock.open}}
+        {{last.open}}
       </div>
       <div class="col-xs-6 col-sm-4 col-md-3">
         <span>High</span>
-        {{stock.high}}
+        {{last.high}}
       </div>
       <div class="col-xs-6 col-sm-4 col-md-3">
         <span>Low</span>
-        {{stock.low}}
+        {{last.low}}
       </div>
       <div class="col-xs-6 col-sm-4 col-md-3">
         <span>Prev</span>
-        {{stock.prev}}
+        {{last.prev}}
       </div>
     </div>
   </div>

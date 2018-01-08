@@ -1,4 +1,5 @@
 import { Request, Response, Router } from 'express';
+import * as moment from 'moment';
 
 import { Generator, Evaluator } from '../utils';
 import { DBIndicator } from '../db';
@@ -10,7 +11,18 @@ const router = Router();
  * get list of indicators
  */
 router.get('/', (req: Request, res: Response) => {
-  DBIndicator.find({})
+  let date = moment().startOf('day');
+  let hours = new Date().getHours();
+  let quarter: number = Math.floor(date.get('minutes').valueOf() / 15);
+  if (req.query.date) {
+    date = moment(req.query.date).startOf('day');
+  }
+  if (hours > 16 || hours < 8) {
+    hours = 8;
+    quarter = 0;
+  }
+  const projection = '_id name symbol date hours.' + hours + '.' + quarter;
+  DBIndicator.find({ date: date }, projection)
     .then(doc => {
       res.json(doc);
     })
@@ -20,23 +32,15 @@ router.get('/', (req: Request, res: Response) => {
 });
 
 /**
- * GET /last
- * get list of last values
+ * GET /:symbol
+ * get specific indicator
  */
-router.get('/last', (req: Request, res: Response) => {
-  DBIndicator.aggregate([{
-    $sort: { initials: 1, time: -1}
-  }, {
-    $group: {
-      _id: '$short',
-      name: {$first: '$name'},
-      time: {$first: '$time'},
-      high: {$first: '$high'},
-      low: {$first: '$low'},
-      last: {$first: '$last'},
-      change: {$first: '$change'}
-    }
-  }])
+router.get('/:symbol', (req: Request, res: Response) => {
+  let date = moment().startOf('day');
+  if (req.query.date) {
+    date = moment(req.query.date).startOf('day');
+  }
+  DBIndicator.findOne({ symbol: req.params.symbol, date: date })
     .then(doc => {
       res.json(doc);
     })
@@ -44,3 +48,5 @@ router.get('/last', (req: Request, res: Response) => {
       res.status(400).json(err);
     });
 });
+
+export default router;

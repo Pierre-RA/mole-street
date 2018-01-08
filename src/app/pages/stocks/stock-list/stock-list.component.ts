@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Stock } from '../../../../shared';
+import { DailyQuote } from '../../../../shared';
 import { StockService } from '../stock.service';
 
 @Component({
@@ -10,7 +10,7 @@ import { StockService } from '../stock.service';
 })
 export class StockListComponent implements OnInit {
 
-  stocks: Array<Stock>;
+  stocks: Array<DailyQuote>;
   loaded: boolean;
   message: string;
 

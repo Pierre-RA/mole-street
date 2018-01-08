@@ -1,9 +1,196 @@
-import { Stock } from '../../shared';
-import { DBStock } from '../db/stock';
-import { Random } from './random';
+import * as moment from 'moment';
 
+import { Quote, QuarterlyQuote, DailyIndicator, DailyQuote } from '../../shared';
+import { DBStock, DBIndicator } from '../db';
+import { Random } from './random';
+import { Text } from './text';
+
+/**
+ * class Evaluator
+ */
 export class Evaluator {
 
+  /**
+   * evalFirst(): void
+   * Eval stocks when the server launch
+   */
+  static evalFirst(): void {
+    // Get all latest stocks
+    DBStock.aggregate([{
+      $sort: { symbol: 1, date: -1}
+    }, {
+      $group: {
+        _id: '$symbol',
+        name: {$first: '$name'},
+        symbol: {$first: '$symbol'},
+        date: {$first: '$date'},
+        hours: {$first: '$hours'}
+      }
+    }])
+      .then(doc => {
+        // Clone stocks older than today
+        let clones: Array<DailyQuote>;
+        clones = [];
+        doc.forEach((stock: DailyQuote) => {
+          // Stock is older, clone it
+          if (moment(stock.date).isBefore(moment(), 'day')) {
+            clones.push(cloneStock(stock));
+          }
+        });
+        return DBStock.insertMany(clones);
+      })
+      .then(doc => {
+        console.log('*** evalFirst *** ' + doc.length + ' quotes have been updated');
+        return DBIndicator.aggregate([{
+          $sort: { symbol: 1, date: -1}
+        }, {
+          $group: {
+            _id: '$symbol',
+            name: {$first: '$name'},
+            symbol: {$first: '$symbol'},
+            date: {$first: '$date'},
+            indicators: {$first: '$indicators'},
+            amount: {$first: '$amount'},
+            hours: {$first: '$hours'}
+          }
+        }]);
+      })
+      .then(doc => {
+        // Clone indicators older than today
+        let clones: Array<DailyIndicator>;
+        clones = [];
+        doc.forEach((indicator: DailyIndicator) => {
+          // Indicator is older, clone it
+          if (moment(indicator.date).isBefore(moment(), 'day')) {
+            clones.push(cloneIndicator(indicator));
+          }
+        });
+        return DBIndicator.insertMany(clones);
+      })
+      .then(doc => {
+        console.log('*** evalFirst *** ' + doc.length + ' indicators have been updated');
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  }
+
+  /**
+   * evalQuarterly(): void
+   * Eval during the day
+   */
+  static evalQuarterly(): void {
+    const time = moment();
+    const hour = time.get('hours').valueOf();
+    const quarter = Math.floor(time.get('minutes').valueOf() / 15);
+    const day = time.startOf('day');
+    const quarterly = 'hours.' + hour + '.' + quarter;
+    const lastQuarter = quarter - 1 < 0 ? 3 : quarter - 1;
+    const lastHour = quarter === 3 ? hour - 1 : hour;
+    let indicators: Array<DailyIndicator>;
+    indicators = [];
+    DBIndicator.find({ date: day })
+      .then(doc => {
+        indicators = doc;
+        return DBStock.find({ date: day});
+      })
+      .then(doc => {
+        const bulk = DBStock.collection.initializeOrderedBulkOp();
+        doc.forEach(quote => {
+          bulk.find({ _id: quote.id })
+            .updateOne({
+              $set: {
+                [quarterly]: evalQuarterly(quote.hours[lastHour][lastQuarter])
+              }
+            });
+        });
+        return bulk.execute();
+      })
+      .then(doc => {
+        console.log('ok', doc);
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  }
+}
+
+/**
+ * evalQuarterly(quote: QuarterlyQuote): QuarterlyQuote
+ */
+function evalQuarterly(quote: QuarterlyQuote): QuarterlyQuote {
+  const tmp = 10;
+  return {
+    volume: quote.volume,
+    open: quote.open,
+    high: tmp > quote.high ? tmp : quote.high,
+    low: tmp < quote.low ? tmp : quote.low,
+    last: tmp,
+    prev: quote.last,
+    change: 0
+  };
+}
+
+/**
+ * cloneStock(stock: DailyQuote): DailyQuote
+ * Clone stock with a new date set as today
+ */
+function cloneStock(stock: DailyQuote): DailyQuote {
+  let result: DailyQuote;
+  const time = moment();
+  const hour = time.get('hours').valueOf();
+  const quarter = Math.floor(time.get('minutes').valueOf() / 15);
+  result = {
+    name: stock.name,
+    symbol: stock.symbol,
+    date: moment().startOf('day').toString(),
+    indicators: stock.indicators,
+    amount: stock.amount,
+    hours: Text.getEmptyHours()
+  };
+  const last = getLastQuote(stock);
+  result.hours[8][0] = last;
+  result.hours[hour][quarter] = last;
+  return result;
+}
+
+/**
+ * cloneIndicator(indicator: DailyIndicator): DailyIndicator
+ * Clone indicator with a new date set as today
+ */
+function cloneIndicator(indicator: DailyIndicator): DailyIndicator {
+  let result: DailyIndicator;
+  const time = moment();
+  const hour = time.get('hours');
+  const quarter = Math.floor(time.get('minutes') / 15);
+  result = {
+    name: indicator.name,
+    symbol: indicator.symbol,
+    date: moment().startOf('day').toString(),
+    hours: Text.getEmptyHours()
+  };
+  const last = getLastQuote(indicator);
+  result.hours[8][0] = last;
+  result.hours[hour][quarter] = last;
+  return result;
+}
+
+/**
+ * getLastQuote(quote: Quote): QuarterlyQuote
+ */
+function getLastQuote(quote: Quote): QuarterlyQuote {
+  let last: QuarterlyQuote;
+  for (let i = 8; i < 17; i++) {
+    for (let j = 0; j < 4; j++) {
+      if (quote.hours[i][j]) {
+        last = quote.hours[i][j];
+      }
+    }
+  }
+  return last;
+}
+
+/*
   static evalStock(stock: Stock, timeRef?: number): Stock {
     const tmp: Stock = cloneStock(stock);
     tmp.time = timeRef ? timeRef : tmp.time;
@@ -21,44 +208,7 @@ export class Evaluator {
     tmp.low = tmp.last < tmp.low ? tmp.last : tmp.low;
     return tmp;
   }
-
-  static evalList(list: Array<Stock>, time?: number): Array<Stock> {
-    const tmp = list.slice();
-    time = time ? time : new Date().getTime();
-    return tmp.map(stock => this.evalStock(stock, time));
-  }
-
-  static evalDB(): void {
-    DBStock.aggregate([{
-      $sort: { initials: 1, time: -1}
-    }, {
-      $group: {
-        _id: '$initials',
-        name: {$first: '$name'},
-        type: {$first: '$type'},
-        initials: {$first: '$initials'},
-        time: {$first: '$time'},
-        volume: {$first: '$volume'},
-        high: {$first: '$high'},
-        low: {$first: '$low'},
-        open: {$first: '$open'},
-        last: {$first: '$last'},
-        prev: {$first: '$prev'},
-        change: {$first: '$change'},
-      }
-    }])
-      .then((doc: Array<Stock>) => {
-        return DBStock.insertMany(Evaluator.evalList(doc));
-      })
-      .then(doc => {
-        console.log(doc.length + ' have been updated.');
-      })
-      .catch(err => {
-        console.error('something wrong happened:', err);
-      });
-  }
-
-}
+*/
 
 function getClimb(cliff?: number) {
   const luck = Math.random();
@@ -69,18 +219,3 @@ function getClimb(cliff?: number) {
   return Random.getDouble(0, 0.2) - 0.15;
 }
 
-function cloneStock(stock: Stock) {
-  return {
-    name: stock.name,
-    initials: stock.initials,
-    type: stock.type,
-    time: new Date().getTime(),
-    volume: stock.volume,
-    high: stock.high,
-    low: stock.low,
-    open: stock.open,
-    last: stock.last,
-    prev: stock.prev,
-    change: stock.change
-  };
-}

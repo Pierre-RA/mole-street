@@ -1,5 +1,5 @@
 {
-  "consumer discretionary": {
+  "MS-ALL-CD": {
     "weight": 84,
     "list": [
       "automobiles",
@@ -34,7 +34,7 @@
       "zips"
     ]
   },
-  "consumer staples": {
+  "MS-ALL-CS": {
     "weight": 34,
     "list": [
       "beverages",
@@ -57,7 +57,7 @@
       "yoghourts"
     ]
   },
-  "energy": {
+  "MS-ALL-E": {
     "weight": 32,
     "list": [
       "bioenergy",
@@ -71,7 +71,7 @@
       "steam"
     ]
   },
-  "financial": {
+  "MS-ALL-F": {
     "weight": 67,
     "list": [
       "bank",
@@ -85,7 +85,7 @@
       "trade"
     ]
   },
-  "health care": {
+  "MS-ALL-HC": {
     "weight": 62,
     "list": [
       "bioscience",
@@ -107,7 +107,7 @@
       "technologies"
     ]
   },
-  "industrials": {
+  "MS-ALL-I": {
     "weight": 69,
     "list": [
       "air",
@@ -135,7 +135,7 @@
       "works"
     ]
   },
-  "information technology": {
+  "MS-ALL-IT": {
     "weight": 71,
     "list": [
       "card",
@@ -159,7 +159,7 @@
       "technologies"
     ]
   },
-  "materials": {
+  "MS-ALL-M": {
     "weight": 25,
     "list": [
       "agronomics",
@@ -183,7 +183,7 @@
       "zincs"
     ]
   },
-  "real estate": {
+  "MS-ALL-RE": {
     "weight": 33,
     "list": [
       "apartments",
@@ -201,7 +201,7 @@
       "warehouses"
     ]
   },
-  "telecom services": {
+  "MS-ALL-TS": {
     "weight": 48,
     "list": [
       "cable",
@@ -221,7 +221,7 @@
       "xenons"
     ]
   },
-  "utilities": {
+  "MS-ALL-U": {
     "weight": 28,
     "list": [
       "energy",
