@@ -32,7 +32,7 @@ export class StockItemComponent implements OnInit {
       this.stockService.getStock(this.activatedRoute.snapshot.params['id']).subscribe(data => {
         this.loaded = true;
         this.stocks = data;
-        // this.parseStocks();
+        this.parseStocks();
       }, err => {
         this.loaded = true;
         this.message = 'Cannot fetch data.';
@@ -40,17 +40,28 @@ export class StockItemComponent implements OnInit {
     }
   }
 
-  // parseStocks() {
-  //   this.results = [{
-  //     name: this.stocks[0].initials || 'N/A',
-  //     series: this.stocks.slice().reverse().map(data => {
-  //       return {
-  //         name: new Date(data.time).getHours() + ':' + new Date(data.time).getMinutes(),
-  //         value: data.last
-  //       };
-  //     })
-  //   }];
-  // }
+  parseStocks() {
+    let tmp;
+    tmp = [];
+    const date = new Date(this.stocks[0].date);
+    let day = '(' + (date.getMonth() + 1) +
+      ' - ' + date.getDate() + ')';
+    for (let i = 8; i < 17; i++) {
+      for (let j = 0; j < 4; j++) {
+        if (this.stocks[0].hours[i] && this.stocks[0].hours[i][j] && this.stocks[0].hours[i][j].last) {
+          day = tmp.length === 0 ? day : '';
+          tmp.push({
+            name: i + ':' + (j * 15),
+            value: this.stocks[0].hours[i][j].last
+          });
+        }
+      }
+    }
+    this.results = [{
+      name: this.stocks[0].symbol || 'N/A',
+      series: tmp
+    }];
+  }
 
   xAxisTickFormatting(value) {
     return this.datePipe.transform(value, 'short');
