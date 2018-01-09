@@ -158,7 +158,7 @@ function evalQuarterly(quote: QuarterlyQuote): QuarterlyQuote {
   // Get new value
   const change = Random.getDouble(0, range) - axis;
   let last = +(quote.last * (1 + change)).toFixed(2);
-  if (last < 5) {
+  if (last < 0.05) {
     last = quote.last;
   }
 

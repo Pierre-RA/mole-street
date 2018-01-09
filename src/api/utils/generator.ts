@@ -13,7 +13,7 @@ export class Generator {
     const type: string = Random.getType();
     const name: string = Random.getName(type);
     const suffix: string = Random.getSuffix();
-    const price: number = Random.getDecimal(10, 150);
+    const price: number = Random.getDecimal(5, 195);
     let day = moment().startOf('day');
     if (new Date().getHours() > 16) {
       day = moment(day).add(1, 'days');
