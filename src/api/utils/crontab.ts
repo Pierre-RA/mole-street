@@ -12,7 +12,7 @@ export class Crontab {
    * Eval stocks when starting the server
    */
   static evalFirst(): void {
-    console.log('*** cron *** Eval first');
+    console.log('*** cron    *** Eval first');
     Evaluator.evalFirst();
   }
 
@@ -22,7 +22,7 @@ export class Crontab {
    */
   static evalNewDay(): void {
     cron.schedule('0 8 * * *', function() {
-      console.log('*** cron *** Eval new day');
+      console.log('*** cron    *** Eval new day');
       Evaluator.evalFirst();
     });
   }
@@ -33,11 +33,11 @@ export class Crontab {
    */
   static evalQuarterly(): void {
     cron.schedule('0 9-16 * * *', function() {
-      console.log('*** cron *** Eval new hour');
+      console.log('*** cron    *** Eval new hour');
       Evaluator.evalQuarterly();
     });
     cron.schedule('15,30,45 8-16 * * *', function() {
-      console.log('*** cron *** Eval quarterly');
+      console.log('*** cron    *** Eval quarterly');
       Evaluator.evalQuarterly();
     });
   }
@@ -50,9 +50,6 @@ export class Crontab {
     this.evalFirst();
     this.evalNewDay();
     this.evalQuarterly();
-    // Temporary Eval
-    console.log('*** cron *** Eval quarterly (debug)');
-    // Evaluator.evalQuarterly();
   }
 
 }

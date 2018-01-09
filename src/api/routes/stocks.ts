@@ -11,13 +11,14 @@ const router = Router();
  * get list of stocks
  */
 router.get('/', (req: Request, res: Response) => {
-  let date = moment().startOf('day');
-  let hours = new Date().getHours();
-  let quarter: number = Math.floor(date.get('minutes').valueOf() / 15);
+  const time = moment();
+  let hours = time.get('hours');
+  let quarter: number = Math.floor(time.get('minutes').valueOf() / 15);
+  let date = time.startOf('day');
   if (req.query.date) {
     date = moment(req.query.date).startOf('day');
   }
-  if (hours > 16 || hours < 8) {
+  if (hours < 8) {
     hours = 8;
     quarter = 0;
   }
@@ -25,7 +26,7 @@ router.get('/', (req: Request, res: Response) => {
     hours = 16;
     quarter = 3;
   }
-  const projection = '_id name symbol date hours.' + hours + '.' + quarter;
+  const projection = '_id name symbol date indicators amount hours.' + hours + '.' + quarter;
   DBStock.find({ date: date }, projection)
     .then(doc => {
       res.json(doc);
@@ -40,9 +41,10 @@ router.get('/', (req: Request, res: Response) => {
  * Return list of stocks from indicator :symbol
  */
 router.get('/by-indicator/:symbol', (req: Request, res: Response) => {
-  let date = moment().startOf('day');
-  let hours = new Date().getHours();
-  let quarter: number = Math.floor(date.get('minutes').valueOf() / 15);
+  const time = moment();
+  let hours = time.get('hours');
+  let quarter: number = Math.floor(time.get('minutes').valueOf() / 15);
+  let date = time.startOf('day');
   if (req.query.date) {
     date = moment(req.query.date).startOf('day');
   }
@@ -50,7 +52,7 @@ router.get('/by-indicator/:symbol', (req: Request, res: Response) => {
     hours = 8;
     quarter = 0;
   }
-  const projection = '_id name symbol date hours.' + hours + '.' + quarter;
+  const projection = '_id name symbol date indicators amount hours.' + hours + '.' + quarter;
   DBStock.find({ date: date, indicators: req.params.symbol }, projection)
     .then(doc => {
       res.json(doc);

@@ -40,7 +40,7 @@ export class Evaluator {
         return DBStock.insertMany(clones);
       })
       .then(doc => {
-        console.log('*** evalFirst *** ' + doc.length + ' quotes have been updated');
+        console.log('*** info    *** ' + doc.length + ' quotes have been updated');
         return DBIndicator.aggregate([{
           $sort: { symbol: 1, date: -1}
         }, {
@@ -68,7 +68,7 @@ export class Evaluator {
         return DBIndicator.insertMany(clones);
       })
       .then(doc => {
-        console.log('*** evalFirst *** ' + doc.length + ' indicators have been updated');
+        console.log('*** info    *** ' + doc.length + ' indicators have been updated');
       })
       .catch(err => {
         console.error(err);
@@ -87,6 +87,8 @@ export class Evaluator {
     const quarterly = 'hours.' + hour + '.' + quarter;
     const lastQuarter = quarter - 1 < 0 ? 3 : quarter - 1;
     const lastHour = quarter === 3 ? hour - 1 : hour;
+    let update;
+    update = {};
     let indicators: Array<DailyIndicator>;
     indicators = [];
     DBIndicator.find({ date: day })
@@ -97,17 +99,14 @@ export class Evaluator {
       .then(doc => {
         const bulk = DBStock.collection.initializeOrderedBulkOp();
         doc.forEach(quote => {
-          bulk.find({ _id: quote.id })
-            .updateOne({
-              $set: {
-                [quarterly]: evalQuarterly(quote.hours[lastHour][lastQuarter])
-              }
-            });
+          bulk.find({ symbol: quote.symbol }).update({ $set: {
+            [quarterly]: evalQuarterly(getLastQuote(quote))
+          }});
         });
         return bulk.execute();
       })
       .then(doc => {
-        console.log('ok', doc);
+        console.log('*** info    *** done ' + doc.getInsertedIds().length);
       })
       .catch(err => {
         console.error(err);
@@ -119,16 +118,51 @@ export class Evaluator {
  * evalQuarterly(quote: QuarterlyQuote): QuarterlyQuote
  */
 function evalQuarterly(quote: QuarterlyQuote): QuarterlyQuote {
-  const tmp = 10;
-  return {
+  let range = 0.2;
+  let axis = 0.1;
+  let luck = 0.5;
+
+  // Positive outcome
+  if (quote.prev !== 0 && quote.last > quote.prev) {
+    luck = 0.15;
+  }
+
+  // Negative outcome
+  if (quote.prev !== 0 && quote.last > quote.prev) {
+    luck = 0.85;
+  }
+
+  // Luck intervention
+  const rand = Math.random();
+  if (rand > luck) {
+    axis = 0.15;
+  } else {
+    axis = 0.05;
+  }
+
+  // Critical range
+  if (rand > 0.95 || rand < 0.05) {
+    range *= 2;
+    axis *= 2;
+  }
+
+  // Get new value
+  const change = +(Random.getDouble(0, range) - axis).toFixed(2);
+  let last = +(quote.last + change).toFixed(2);
+  if (last < 5) {
+    last = quote.last;
+  }
+
+  const result = {
     volume: quote.volume,
     open: quote.open,
-    high: tmp > quote.high ? tmp : quote.high,
-    low: tmp < quote.low ? tmp : quote.low,
-    last: tmp,
+    high: last > quote.high ? last : quote.high,
+    low: last < quote.low ? last : quote.low,
+    last: last,
     prev: quote.last,
-    change: 0
+    change: +(last - quote.last).toFixed(2)
   };
+  return result;
 }
 
 /**
@@ -149,6 +183,7 @@ function cloneStock(stock: DailyQuote): DailyQuote {
     hours: Text.getEmptyHours()
   };
   const last = getLastQuote(stock);
+  last.open = last.last;
   result.hours[8][0] = last;
   result.hours[hour][quarter] = last;
   return result;
@@ -170,6 +205,7 @@ function cloneIndicator(indicator: DailyIndicator): DailyIndicator {
     hours: Text.getEmptyHours()
   };
   const last = getLastQuote(indicator);
+  last.open = last.last;
   result.hours[8][0] = last;
   result.hours[hour][quarter] = last;
   return result;
@@ -182,40 +218,11 @@ function getLastQuote(quote: Quote): QuarterlyQuote {
   let last: QuarterlyQuote;
   for (let i = 8; i < 17; i++) {
     for (let j = 0; j < 4; j++) {
-      if (quote.hours[i][j]) {
+      if (quote.hours[i][j] && quote.hours[i][j].last) {
         last = quote.hours[i][j];
       }
     }
   }
   return last;
-}
-
-/*
-  static evalStock(stock: Stock, timeRef?: number): Stock {
-    const tmp: Stock = cloneStock(stock);
-    tmp.time = timeRef ? timeRef : tmp.time;
-    tmp.change = Random.getDouble(0, 0.2) - 0.1;
-    if (tmp.prev !== 0 && tmp.last > tmp.prev) {
-      tmp.change = getClimb(0.85);
-    }
-    if (tmp.prev !== 0 && tmp.last < tmp.prev) {
-      tmp.change = getClimb(0.15);
-    }
-    tmp.change = +tmp.change.toFixed(2);
-    tmp.prev = tmp.last;
-    tmp.last = +(tmp.last + tmp.change).toFixed(2);
-    tmp.high = tmp.last > tmp.high ? tmp.last : tmp.high;
-    tmp.low = tmp.last < tmp.low ? tmp.last : tmp.low;
-    return tmp;
-  }
-*/
-
-function getClimb(cliff?: number) {
-  const luck = Math.random();
-  cliff = cliff || 0.85;
-  if (luck < cliff) {
-    return Random.getDouble(0, 0.2) - 0.05;
-  }
-  return Random.getDouble(0, 0.2) - 0.15;
 }
 
