@@ -105,9 +105,18 @@ export class Evaluator {
         });
         return bulk.execute();
       })
-      .then(doc => {
-        console.log('*** info    *** done ' + doc.getInsertedIds().length);
+      .then(() => {
+        // return DBStock.find({ date: day });
       })
+      // .then(doc => {
+      //   let tmp;
+      //   doc.forEach(quote => {
+      //     tmp = quote.hours[hour][quarter];
+      //     quote.indicators.forEach(indicator => {
+      //       // TODO: complete
+      //     });
+      //   });
+      // })
       .catch(err => {
         console.error(err);
       });
@@ -147,8 +156,8 @@ function evalQuarterly(quote: QuarterlyQuote): QuarterlyQuote {
   }
 
   // Get new value
-  const change = +(Random.getDouble(0, range) - axis).toFixed(2);
-  let last = +(quote.last + change).toFixed(2);
+  const change = Random.getDouble(0, range) - axis;
+  let last = +(quote.last * (1 + change)).toFixed(2);
   if (last < 5) {
     last = quote.last;
   }
@@ -160,7 +169,7 @@ function evalQuarterly(quote: QuarterlyQuote): QuarterlyQuote {
     low: last < quote.low ? last : quote.low,
     last: last,
     prev: quote.last,
-    change: +(last - quote.last).toFixed(2)
+    change: +(last - quote.open).toFixed(2)
   };
   return result;
 }
