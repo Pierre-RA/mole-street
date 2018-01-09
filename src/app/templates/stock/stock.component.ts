@@ -43,7 +43,7 @@ export class StockComponent implements OnInit {
     const time: Date = new Date(this.stock.date);
     for (let i = 8; i < 17; i++) {
       for (let j = 0; j < 4; j++) {
-        if (this.stock.hours[i] && this.stock.hours[i][j]) {
+        if (this.stock.hours[i] && this.stock.hours[i][j] && this.stock.hours[i][j].last) {
           last = this.stock.hours[i][j];
           time.setHours(i);
           time.setMinutes(j * 15);
