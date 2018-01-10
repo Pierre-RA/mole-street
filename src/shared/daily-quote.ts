@@ -1,10 +1,10 @@
 import { HourlyQuote } from './hourly-quote';
-import { Quote } from './quote';
 
-export interface DailyQuote extends Quote {
+export interface DailyQuote {
   name: string;
   symbol: string;
   date?: string;
+  isIndex: boolean;
   indicators: Array<string>;
   amount: number;
   hours: {

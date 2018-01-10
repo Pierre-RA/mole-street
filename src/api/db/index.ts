@@ -1,3 +1,2 @@
-export * from './indicator';
-export * from './stock';
+export * from './quote';
 export * from './user';

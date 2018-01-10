@@ -1,14 +1,12 @@
 import { Router } from 'express';
 import HomeRoutes from './home';
-import IndicatorRoutes from './indicator';
-import StockRoutes from './stocks';
+import QuoteRoutes from './quotes';
 import UserRoutes from './users';
 
 const router = Router();
 
 router.use('/', HomeRoutes);
-router.use('/indicators', IndicatorRoutes);
-router.use('/stocks', StockRoutes);
+router.use('/quotes', QuoteRoutes);
 router.use('/users', UserRoutes);
 
 export default router;

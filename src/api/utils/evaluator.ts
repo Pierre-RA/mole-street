@@ -1,9 +1,10 @@
 import * as moment from 'moment';
 
-import { Quote, QuarterlyQuote, DailyIndicator, DailyQuote } from '../../shared';
-import { DBStock, DBIndicator } from '../db';
+import { QuarterlyQuote, DailyQuote } from '../../shared';
+import { DBQuote } from '../db';
 import { Random } from './random';
 import { Text } from './text';
+import { Generator } from './generator';
 
 /**
  * class Evaluator
@@ -15,8 +16,9 @@ export class Evaluator {
    * Eval stocks when the server launch
    */
   static evalFirst(): void {
+    let hasBasicIndices = false;
     // Get all latest stocks
-    DBStock.aggregate([{
+    DBQuote.aggregate([{
       $sort: { symbol: 1, date: -1}
     }, {
       $group: {
@@ -24,6 +26,9 @@ export class Evaluator {
         name: {$first: '$name'},
         symbol: {$first: '$symbol'},
         date: {$first: '$date'},
+        indicators: {$first: '$indicators'},
+        amount: {$first: '$amount'},
+        isIndex: {$first: '$isIndex'},
         hours: {$first: '$hours'}
       }
     }])
@@ -31,44 +36,28 @@ export class Evaluator {
         // Clone stocks older than today
         let clones: Array<DailyQuote>;
         clones = [];
-        doc.forEach((stock: DailyQuote) => {
+        doc.forEach((quote: DailyQuote) => {
           // Stock is older, clone it
-          if (moment(stock.date).isBefore(moment(), 'day')) {
-            clones.push(cloneStock(stock));
+          if (moment(quote.date).isBefore(moment(), 'day')) {
+            clones.push(cloneQuote(quote));
+          }
+          // Quote is an Index
+          if (quote.isIndex) {
+            hasBasicIndices = true;
           }
         });
-        return DBStock.insertMany(clones);
+        return DBQuote.insertMany(clones);
       })
       .then(doc => {
         console.log('*** info    *** ' + doc.length + ' quotes have been updated');
-        return DBIndicator.aggregate([{
-          $sort: { symbol: 1, date: -1}
-        }, {
-          $group: {
-            _id: '$symbol',
-            name: {$first: '$name'},
-            symbol: {$first: '$symbol'},
-            date: {$first: '$date'},
-            indicators: {$first: '$indicators'},
-            amount: {$first: '$amount'},
-            hours: {$first: '$hours'}
-          }
-        }]);
+        if (!hasBasicIndices) {
+          return DBQuote.insertMany(Generator.getBasicIndicators());
+        }
       })
       .then(doc => {
-        // Clone indicators older than today
-        let clones: Array<DailyIndicator>;
-        clones = [];
-        doc.forEach((indicator: DailyIndicator) => {
-          // Indicator is older, clone it
-          if (moment(indicator.date).isBefore(moment(), 'day')) {
-            clones.push(cloneIndicator(indicator));
-          }
-        });
-        return DBIndicator.insertMany(clones);
-      })
-      .then(doc => {
-        console.log('*** info    *** ' + doc.length + ' indicators have been updated');
+        if (doc) {
+          console.log('*** info    *** ' + doc.length + ' indices have been updated');
+        }
       })
       .catch(err => {
         console.error(err);
@@ -87,36 +76,28 @@ export class Evaluator {
     const quarterly = 'hours.' + hour + '.' + quarter;
     const lastQuarter = quarter - 1 < 0 ? 3 : quarter - 1;
     const lastHour = quarter === 3 ? hour - 1 : hour;
-    let update;
-    update = {};
-    let indicators: Array<DailyIndicator>;
-    indicators = [];
-    DBIndicator.find({ date: day })
+    let tmp: QuarterlyQuote;
+    DBQuote.find({ date: day }).sort({ isIndex: 1 })
       .then(doc => {
-        indicators = doc;
-        return DBStock.find({ date: day});
-      })
-      .then(doc => {
-        const bulk = DBStock.collection.initializeOrderedBulkOp();
+        const bulk = DBQuote.collection.initializeOrderedBulkOp();
         doc.forEach(quote => {
-          bulk.find({ symbol: quote.symbol }).update({ $set: {
-            [quarterly]: evalQuarterly(getLastQuote(quote))
-          }});
+          if (!quote.isIndex) {
+            tmp = evalQuarterly(getLastQuote(quote));
+            bulk.find({ symbol: quote.symbol }).update({ $set: {
+              [quarterly]: tmp
+            }});
+          } else {
+            // TODO: adapt index
+            bulk.find({ symbol: quote.symbol }).update({ $set: {
+              [quarterly]: getLastQuote(quote)
+            }});
+          }
         });
         return bulk.execute();
       })
       .then(() => {
         // return DBStock.find({ date: day });
       })
-      // .then(doc => {
-      //   let tmp;
-      //   doc.forEach(quote => {
-      //     tmp = quote.hours[hour][quarter];
-      //     quote.indicators.forEach(indicator => {
-      //       // TODO: complete
-      //     });
-      //   });
-      // })
       .catch(err => {
         console.error(err);
       });
@@ -175,23 +156,24 @@ function evalQuarterly(quote: QuarterlyQuote): QuarterlyQuote {
 }
 
 /**
- * cloneStock(stock: DailyQuote): DailyQuote
- * Clone stock with a new date set as today
+ * cloneQuote(quote: DailyQuote): DailyQuote
+ * Clone quote with a new date set as today
  */
-function cloneStock(stock: DailyQuote): DailyQuote {
+function cloneQuote(quote: DailyQuote): DailyQuote {
   let result: DailyQuote;
   const time = moment();
   const hour = time.get('hours').valueOf();
   const quarter = Math.floor(time.get('minutes').valueOf() / 15);
   result = {
-    name: stock.name,
-    symbol: stock.symbol,
+    name: quote.name,
+    symbol: quote.symbol,
+    isIndex: quote.isIndex,
     date: moment().startOf('day').toString(),
-    indicators: stock.indicators,
-    amount: stock.amount,
+    indicators: quote.indicators,
+    amount: quote.amount,
     hours: Text.getEmptyHours()
   };
-  const last = getLastQuote(stock);
+  const last = getLastQuote(quote);
   last.open = last.last;
   result.hours[8][0] = last;
   result.hours[hour][quarter] = last;
@@ -199,31 +181,9 @@ function cloneStock(stock: DailyQuote): DailyQuote {
 }
 
 /**
- * cloneIndicator(indicator: DailyIndicator): DailyIndicator
- * Clone indicator with a new date set as today
+ * getLastQuote(quote: DailyQuote): QuarterlyQuote
  */
-function cloneIndicator(indicator: DailyIndicator): DailyIndicator {
-  let result: DailyIndicator;
-  const time = moment();
-  const hour = time.get('hours');
-  const quarter = Math.floor(time.get('minutes') / 15);
-  result = {
-    name: indicator.name,
-    symbol: indicator.symbol,
-    date: moment().startOf('day').toString(),
-    hours: Text.getEmptyHours()
-  };
-  const last = getLastQuote(indicator);
-  last.open = last.last;
-  result.hours[8][0] = last;
-  result.hours[hour][quarter] = last;
-  return result;
-}
-
-/**
- * getLastQuote(quote: Quote): QuarterlyQuote
- */
-function getLastQuote(quote: Quote): QuarterlyQuote {
+function getLastQuote(quote: DailyQuote): QuarterlyQuote {
   let last: QuarterlyQuote;
   for (let i = 8; i < 17; i++) {
     for (let j = 0; j < 4; j++) {

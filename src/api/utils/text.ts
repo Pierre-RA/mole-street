@@ -1,4 +1,4 @@
-import { DailyIndicator, DailyQuote, QuarterlyQuote } from '../../shared';
+import { DailyQuote, QuarterlyQuote } from '../../shared';
 
 export class Text {
 
@@ -25,17 +25,6 @@ export class Text {
   }
 
   static insertAtQuote(quote: DailyQuote, values: QuarterlyQuote, date: Date): DailyQuote {
-    let hour = date.getHours();
-    let minutes = date.getMinutes();
-    if (hour < 8 || hour > 16) {
-      hour = 8;
-      minutes = 0;
-    }
-    quote.hours[hour][this.getQuarter(minutes)] = values;
-    return quote;
-  }
-
-  static insertAtIndicator(quote: DailyIndicator, values: QuarterlyQuote, date: Date): DailyIndicator {
     let hour = date.getHours();
     let minutes = date.getMinutes();
     if (hour < 8 || hour > 16) {

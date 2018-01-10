@@ -1,13 +1,16 @@
 import * as Mongoose from 'mongoose';
 
-import { DailyIndicator } from '../../shared';
+import { DailyQuote } from '../../shared';
 
-interface IndicatorModel extends DailyIndicator, Mongoose.Document {}
+interface QuoteModel extends DailyQuote, Mongoose.Document {}
 
-export let indicatorSchema = new Mongoose.Schema({
+export let quoteSchema = new Mongoose.Schema({
   name: String,
   symbol: String,
   date: { type: Date, default: Date.now },
+  isIndex: Boolean,
+  indicators: [String],
+  amount: Number,
   hours: {
     8: {
       0: {
@@ -354,4 +357,4 @@ export let indicatorSchema = new Mongoose.Schema({
   }
 });
 
-export let DBIndicator = Mongoose.model<IndicatorModel>('Indicator', indicatorSchema);
+export let DBQuote = Mongoose.model<QuoteModel>('quote', quoteSchema);

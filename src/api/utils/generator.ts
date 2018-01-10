@@ -1,6 +1,6 @@
 import * as moment from 'moment';
 
-import { QuarterlyQuote, DailyIndicator, DailyQuote } from '../../shared';
+import { QuarterlyQuote, DailyQuote } from '../../shared';
 import { Random } from './random';
 import { Text } from './text';
 
@@ -22,6 +22,7 @@ export class Generator {
     const quote = {
       name: adj + ' ' + name + suffix,
       date: day.toString(),
+      isIndex: false,
       symbol: Text.getUniqueInitials(adj + ' ' + name, list),
       indicators: ['MS-ALL', type],
       amount: Random.getInt(1000, 59999) * 1000,
@@ -50,7 +51,7 @@ export class Generator {
     return list;
   }
 
-  static getIndicator(name: string, symbol: string): DailyIndicator {
+  static getIndicator(name: string, symbol: string): DailyQuote {
     let day = moment().startOf('day');
     if (new Date().getHours() > 16) {
       day = moment(day).add(1, 'days');
@@ -59,9 +60,12 @@ export class Generator {
       name: name,
       symbol: symbol,
       date: day.toString(),
+      isIndex: true,
+      indicators: [],
+      amount: 0,
       hours: Text.getEmptyHours()
     };
-    return Text.insertAtIndicator(indicator, {
+    return Text.insertAtQuote(indicator, {
       volume: 0,
       open: 100,
       high: 100,
@@ -72,8 +76,8 @@ export class Generator {
     }, new Date());
   }
 
-  static getBasicIndicators(): Array<DailyIndicator> {
-    let result: Array<DailyIndicator>;
+  static getBasicIndicators(): Array<DailyQuote> {
+    let result: Array<DailyQuote>;
     result = [];
     result.push(this.getIndicator('Mole Street All Stocks Index', 'MS-ALL'));
     result.push(this.getIndicator('MS All Consumer Discretionary Index', 'MS-ALL-CD'));
