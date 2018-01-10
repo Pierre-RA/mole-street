@@ -2,7 +2,7 @@ import { Request, Response, Router } from 'express';
 import * as moment from 'moment';
 
 import { Generator, Evaluator } from '../utils';
-import { DBStock } from '../db';
+import { DBQuote } from '../db';
 
 const router = Router();
 
@@ -26,8 +26,8 @@ router.get('/', (req: Request, res: Response) => {
     hours = 16;
     quarter = 3;
   }
-  const projection = '_id name symbol date indicators amount hours.' + hours + '.' + quarter;
-  DBStock.find({ date: date }, projection)
+  const projection = '_id name symbol date indicators isIndex amount hours.' + hours + '.' + quarter;
+  DBQuote.find({ date: date }, projection)
     .then(doc => {
       res.json(doc);
     })
@@ -52,8 +52,8 @@ router.get('/by-indicator/:symbol', (req: Request, res: Response) => {
     hours = 8;
     quarter = 0;
   }
-  const projection = '_id name symbol date indicators amount hours.' + hours + '.' + quarter;
-  DBStock.find({ date: date, indicators: req.params.symbol }, projection)
+  const projection = '_id name symbol date indicators isIndex amount hours.' + hours + '.' + quarter;
+  DBQuote.find({ date: date, indicators: req.params.symbol }, projection)
     .then(doc => {
       res.json(doc);
     })
@@ -67,7 +67,7 @@ router.get('/by-indicator/:symbol', (req: Request, res: Response) => {
  * get stock at a time from id
  */
 router.get('/stock/:id', (req: Request, res: Response) => {
-  DBStock.findOne({ _id: req.params.id })
+  DBQuote.findOne({ _id: req.params.id })
     .then(doc => {
       res.json(doc);
     })
@@ -81,7 +81,7 @@ router.get('/stock/:id', (req: Request, res: Response) => {
  * get list of values for stock :symbol
  */
 router.get('/:symbol', (req: Request, res: Response) => {
-  DBStock.find({ symbol: req.params.symbol }).sort({ time: -1 })
+  DBQuote.find({ symbol: req.params.symbol }).sort({ time: -1 })
     .then(doc => {
       res.json(doc);
     })

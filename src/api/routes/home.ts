@@ -1,8 +1,8 @@
 import { Request, Response, Router } from 'express';
 
 import { Generator, Evaluator } from '../utils';
-import { DailyQuote, DailyIndicator } from '../../shared';
-import { DBIndicator, DBStock } from '../db';
+import { DailyQuote } from '../../shared';
+import { DBQuote } from '../db';
 const pkg = require('../../../package.json');
 
 const router = Router();
@@ -13,7 +13,7 @@ const router = Router();
  */
 router.get('/', (req: Request, res: Response) => {
   res.json({
-    message: 'Welcome to Skilful API',
+    message: 'Welcome to Mole-Street API',
     version: pkg['version'],
   });
 });
@@ -24,15 +24,9 @@ router.get('/', (req: Request, res: Response) => {
  */
 router.post('/random', (req: Request, res: Response) => {
   const length = req.query['length'] || 50;
-  DBIndicator.insertMany(Generator.getBasicIndicators())
-    .catch(err => {
-      return true;
-    })
+  DBQuote.find().distinct('symbol')
     .then(doc => {
-      return DBStock.find().distinct('initials');
-    })
-    .then(doc => {
-      return DBStock.insertMany(Generator.getStockList(length, doc));
+      return DBQuote.insertMany(Generator.getStockList(length, doc));
     })
     .then(doc => {
       res.json(doc);
@@ -41,20 +35,5 @@ router.post('/random', (req: Request, res: Response) => {
       res.status(400).json(err);
     });
 });
-
-// TODO: remove this route
-// router.post('/update/:id', (req: Request, res: Response) => {
-//   DBStock.findOne({ _id: req.params.id })
-//     .then(doc => {
-//       const tmp = new DBStock(Evaluator.evalStock(doc, new Date().getTime()));
-//       return tmp.save();
-//     })
-//     .then(doc => {
-//       res.json(doc);
-//     })
-//     .catch(err => {
-//       res.status(400).json(err);
-//     });
-// });
 
 export default router;
