@@ -1,0 +1,78 @@
+<div *ngIf="stock && !small" class="template-stock" [ngClass]="{'stock-pad': isList}">
+  <ng-container *ngIf="!isList">
+    <h2>
+      {{stock.name | uppercase }} ({{stock.symbol}})
+    </h2>
+    <p>
+      <a routerLink="/stocks">Back to list</a>
+    </p>
+  </ng-container>
+
+  <div class="stock-title" (click)="go()">
+    <p class="stock-name">
+      {{stock.name | uppercase }} ({{stock.symbol}})
+    </p>
+    <p class="stock-last">
+      {{last.last}}
+      <span [ngClass]="{'text-success': last.change > 0, 'text-danger': last.change < 0}">
+        {{last.change}}
+        <i class="fa fa-lg fa-caret-up" *ngIf="last.change > 0"></i>
+        <i class="fa fa-lg fa-caret-down" *ngIf="last.change < 0"></i>
+        ({{getChange()}})
+      </span>
+    </p>
+    <p>
+      Last Trade Time: {{lastTime | date:'medium'}}
+    </p>
+    <div class="row stock-table" *ngIf="!isList">
+      <div class="col-xs-6 col-sm-4 col-md-3">
+        <span>Last</span>
+        {{last.last}}
+      </div>
+      <div class="col-xs-6 col-sm-4 col-md-3">
+        <span>Change</span>
+        {{last.change}}
+      </div>
+      <div class="col-xs-6 col-sm-4 col-md-3">
+        <span>Change %</span>
+        {{getChange()}}
+      </div>
+      <div class="col-xs-6 col-sm-4 col-md-3">
+        <span>Volume</span>
+        {{last.volume}}
+      </div>
+      <div class="col-xs-6 col-sm-4 col-md-3">
+        <span>Open</span>
+        {{last.open}}
+      </div>
+      <div class="col-xs-6 col-sm-4 col-md-3">
+        <span>High</span>
+        {{last.high}}
+      </div>
+      <div class="col-xs-6 col-sm-4 col-md-3">
+        <span>Low</span>
+        {{last.low}}
+      </div>
+      <div class="col-xs-6 col-sm-4 col-md-3">
+        <span>Prev</span>
+        {{last.prev}}
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="stock && small"
+  (click)="go()"
+  class="template-stock-small"
+  [ngClass]="{'text-success': last.change > 0, 'text-danger': last.change < 0}">
+  <p>
+    {{stock.symbol}}
+    <span>{{last.last}}</span>
+  </p>
+  <p>
+    {{last.change}}
+    <i class="fa fa-lg fa-caret-up" *ngIf="last.change > 0"></i>
+    <i class="fa fa-lg fa-caret-down" *ngIf="last.change < 0"></i>
+    ({{getChange()}})
+  </p>
+</div>

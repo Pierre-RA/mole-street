@@ -1,0 +1,240 @@
+{
+  "MS-ALL-CD": {
+    "weight": 84,
+    "list": [
+      "automobiles",
+      "auto parts",
+      "buy",
+      "casinos",
+      "cosmetics",
+      "depot",
+      "dish network",
+      "electric network",
+      "footwear",
+      "fortune",
+      "home",
+      "hotels",
+      "internet",
+      "jaeger",
+      "kitchens",
+      "luxuries",
+      "maze",
+      "netmovies",
+      "omicron",
+      "price",
+      "records",
+      "reels",
+      "stardollar",
+      "tick clocks",
+      "trip counsellor",
+      "ultra",
+      "vans",
+      "watches",
+      "yacths",
+      "zips"
+    ]
+  },
+  "MS-ALL-CS": {
+    "weight": 34,
+    "list": [
+      "beverages",
+      "brewing",
+      "cereals",
+      "cola",
+      "drinks",
+      "foods",
+      "foreman",
+      "generics",
+      "goods",
+      "honey",
+      "kraft",
+      "liquors",
+      "syrops",
+      "tobacco",
+      "wholesale",
+      "wines",
+      "yarn",
+      "yoghourts"
+    ]
+  },
+  "MS-ALL-E": {
+    "weight": 32,
+    "list": [
+      "bioenergy",
+      "energy",
+      "exploration",
+      "gas",
+      "oil",
+      "oilwell",
+      "petroleum",
+      "resources",
+      "steam"
+    ]
+  },
+  "MS-ALL-F": {
+    "weight": 67,
+    "list": [
+      "bank",
+      "banks",
+      "capital",
+      "financial",
+      "financial services",
+      "managers",
+      "markets",
+      "resources",
+      "trade"
+    ]
+  },
+  "MS-ALL-HC": {
+    "weight": 62,
+    "list": [
+      "bioscience",
+      "care",
+      "diagnostics",
+      "genetics",
+      "health",
+      "health services",
+      "laboratories",
+      "labs",
+      "lifesciences",
+      "mechtronics",
+      "medical",
+      "med",
+      "pharm",
+      "pharmaceutical",
+      "sciences",
+      "scientific",
+      "technologies"
+    ]
+  },
+  "MS-ALL-I": {
+    "weight": 69,
+    "list": [
+      "air",
+      "airlines",
+      "airways",
+      "automation",
+      "brands",
+      "cars",
+      "communications",
+      "constructions",
+      "controls",
+      "dynamics",
+      "electrics",
+      "engineering",
+      "industries",
+      "nuclear",
+      "rentals",
+      "services",
+      "technologies",
+      "transport",
+      "utils",
+      "waste management",
+      "waters",
+      "winds",
+      "works"
+    ]
+  },
+  "MS-ALL-IT": {
+    "weight": 71,
+    "list": [
+      "card",
+      "communications",
+      "computers",
+      "connectivity",
+      "data",
+      "designs",
+      "devices",
+      "digital",
+      "information services",
+      "information technology",
+      "instruments",
+      "materials",
+      "microchips",
+      "networks",
+      "payments",
+      "services",
+      "solutions",
+      "systems",
+      "technologies"
+    ]
+  },
+  "MS-ALL-M": {
+    "weight": 25,
+    "list": [
+      "agronomics",
+      "chemical",
+      "flavors",
+      "fragances",
+      "gas works",
+      "grounds",
+      "hygiene",
+      "industries",
+      "materials",
+      "metal",
+      "mining",
+      "packaging",
+      "paper",
+      "products",
+      "sands",
+      "stones",
+      "wires",
+      "woods",
+      "zincs"
+    ]
+  },
+  "MS-ALL-RE": {
+    "weight": 33,
+    "list": [
+      "apartments",
+      "castle",
+      "centers",
+      "communities",
+      "investments",
+      "property",
+      "properties",
+      "real estate",
+      "realty",
+      "residential",
+      "space storage",
+      "tower",
+      "warehouses"
+    ]
+  },
+  "MS-ALL-TS": {
+    "weight": 48,
+    "list": [
+      "cable",
+      "electronics",
+      "mobile",
+      "navigations",
+      "network communications",
+      "optics",
+      "sat",
+      "solutions",
+      "star",
+      "telecom",
+      "telecoms",
+      "triangle",
+      "video",
+      "wireless",
+      "xenons"
+    ]
+  },
+  "MS-ALL-U": {
+    "weight": 28,
+    "list": [
+      "energy",
+      "key",
+      "labels",
+      "platforms",
+      "power",
+      "quotient",
+      "sources",
+      "utilities",
+      "utils",
+      "water treatment",
+      "water works"
+    ]
+  }
+}

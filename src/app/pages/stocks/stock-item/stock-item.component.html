@@ -1,0 +1,17 @@
+<div class="container">
+  <app-template-stock [stock]="stocks[0]" *ngIf="stocks && stocks[0]"></app-template-stock>
+
+  <ngx-charts-area-chart
+    [scheme]="colorScheme"
+    [results]="results"
+    gradient="true"
+    xAxis="true"
+    yAxis="true"
+    autoScale="true" *ngIf="results && results[0]">
+  </ngx-charts-area-chart>
+
+  <div *ngIf="message">
+    {{message}}
+  </div>
+</div>
+

@@ -1,0 +1,45 @@
+{
+  "suffixes": [{
+    "name": "",
+    "weight": 12
+  }, {
+    "name": "company",
+    "weight": 5
+  }, {
+    "name": "corp.",
+    "weight": 4
+  }, {
+    "name": "corporation",
+    "weight": 2
+  }, {
+    "name": "fund",
+    "weight": 2
+  }, {
+    "name": "fund inc.",
+    "weight": 1
+  }, {
+    "name": "group",
+    "weight": 2
+  }, {
+    "name": "inc.",
+    "weight": 4
+  }, {
+    "name": "incorporated",
+    "weight": 2
+  }, {
+    "name": "limited",
+    "weight": 1
+  },  {
+    "name": "llc",
+    "weight": 2
+  },  {
+    "name": "l.p.",
+    "weight": 1
+  },  {
+    "name": "ltd.",
+    "weight": 4
+  },  {
+    "name": "trust",
+    "weight": 2
+  }]
+}
