@@ -1,5 +1,5 @@
-.template-stock {
-  .stock-title {
+.template-quote {
+  .quote-title {
     border: silver solid 1px;
     border-radius: 5px;
     padding: 5px;
@@ -7,17 +7,17 @@
     p {
       margin: 0;
     }
-    .stock-name {
+    .quote-name {
       font-size: 1.5em;
     }
-    .stock-last {
+    .quote-last {
       font-size: 2.5em;
       span {
         font-size: 0.5em;
       }
     }
   }
-  .stock-table {
+  .quote-table {
     margin: 0;
     div {
       padding: 3px;
@@ -30,18 +30,18 @@
   }
 }
 
-.template-stock.stock-pad {
+.template-quote.quote-pad {
   margin-bottom: 20px;
   border-radius: 5px;
   cursor: pointer;
   box-shadow: 0 0 5px rgba(0,0,0,0.2);
 }
 
-.template-stock.stock-pad:hover {
+.template-quote.quote-pad:hover {
   box-shadow: 0 0 10px rgba(0,0,0,0.4);
 }
 
-.template-stock-small {
+.template-quote-small {
   display: inline-block;
   color: rgb(80,80,80);
   cursor: pointer;
@@ -54,7 +54,7 @@
   }
 }
 
-.template-stock-small:hover {
+.template-quote-small:hover {
   box-shadow: 0 0 10px rgba(0,0,0,0.2);
   border-radius: 5px;
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { DailyQuote } from '../../../../shared';
-import { StockService } from '../stock.service';
+import { QuoteService } from '../quote.service';
 
 @Component({
   selector: 'app-stock-list',
@@ -14,10 +14,10 @@ export class StockListComponent implements OnInit {
   loaded: boolean;
   message: string;
 
-  constructor(private stockService: StockService) { }
+  constructor(private quoteService: QuoteService) { }
 
   ngOnInit() {
-    this.stockService.getLast().subscribe(data => {
+    this.quoteService.getAll().subscribe(data => {
       this.loaded = true;
       this.stocks = data;
     }, err => {

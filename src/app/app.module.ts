@@ -17,8 +17,8 @@ import { AppComponent } from './app.component';
     HttpClientModule,
     RouterModule.forRoot([
       { path: '', loadChildren: './pages/landing/landing.module#LandingModule', pathMatch: 'full'},
-      { path: 'stocks', loadChildren: './pages/stocks/stock-list/stock-list.module#StockListModule', pathMatch: 'full'},
-      { path: 'stocks/:id', loadChildren: './pages/stocks/stock-item/stock-item.module#StockItemModule'}
+      { path: 'quotes', loadChildren: './pages/quotes/stock-list/stock-list.module#StockListModule', pathMatch: 'full'},
+      { path: 'quote/:id', loadChildren: './pages/quotes/stock-item/stock-item.module#StockItemModule'}
     ])
   ],
   providers: [],

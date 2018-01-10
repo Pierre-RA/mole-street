@@ -4,20 +4,20 @@ import { RouterModule } from '@angular/router';
 
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 
-import { StockModule } from '../../../templates/stock/stock.module';
+import { QuoteModule } from '../../../templates/quote/quote.module';
 import { StockItemComponent } from './stock-item.component';
-import { StockService } from '../stock.service';
+import { QuoteService } from '../quote.service';
 
 @NgModule({
   imports: [
     CommonModule,
-    StockModule,
+    QuoteModule,
     NgxChartsModule,
     RouterModule.forChild([
       { path: '', component: StockItemComponent }
     ])
   ],
   declarations: [StockItemComponent],
-  providers: [StockService, DatePipe]
+  providers: [QuoteService, DatePipe]
 })
 export class StockItemModule { }

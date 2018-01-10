@@ -1,5 +1,8 @@
 <div class="container">
-  <app-template-stock [stock]="stocks[0]" *ngIf="stocks && stocks[0]"></app-template-stock>
+  <app-template-quote
+    [quote]="stocks[0]"
+    *ngIf="stocks && stocks[0]">
+  </app-template-quote>
 
   <ngx-charts-area-chart
     [scheme]="colorScheme"

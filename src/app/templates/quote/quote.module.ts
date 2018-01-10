@@ -2,15 +2,15 @@ import { NgModule } from '@angular/core';
 import { CommonModule, UpperCasePipe } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
-import { StockComponent } from './stock.component';
+import { QuoteComponent } from './quote.component';
 
 @NgModule({
   imports: [
     CommonModule,
     RouterModule
   ],
-  declarations: [StockComponent],
-  exports: [StockComponent],
+  declarations: [QuoteComponent],
+  exports: [QuoteComponent],
   providers: [UpperCasePipe]
 })
-export class StockModule { }
+export class QuoteModule { }

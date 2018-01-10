@@ -4,18 +4,18 @@
     <a routerLink="/">Back to home</a>
   </p>
 
-  <app-template-stock
-    [stock]="stock"
-    [isList]="true"
+  <app-template-quote
+    [quote]="stock"
+    [click]="true"
     *ngFor="let stock of stocks">
-  </app-template-stock>
+  </app-template-quote>
   
-  <app-template-stock
-    [stock]="stock"
-    [isList]="true"
+  <app-template-quote
+    [quote]="stock"
+    [click]="true"
     small="true"
     *ngFor="let stock of stocks">
-  </app-template-stock>
+  </app-template-quote>
 
   <div *ngIf="!loaded">
     Loading...

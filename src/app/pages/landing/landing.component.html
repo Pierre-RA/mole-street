@@ -3,7 +3,16 @@
   <p class="text-center text-muted">
     The underground stock exchange
   </p>
-  <p>
-    <a routerLink="stocks">Stock List</a>
-  </p>
+  <app-template-quote small="true" click="true" [quote]="msAll" *ngIf="msAll"></app-template-quote>
+  <ul>
+    <li>
+      <a routerLink="quotes">Quote List</a>
+    </li>
+    <!-- <li>
+      <a routerLink="list/sectors">Sectors</a>
+    </li>
+    <li>
+      <a routerLink="list/indices">Indices</a>
+    </li> -->
+  </ul>
 </div>

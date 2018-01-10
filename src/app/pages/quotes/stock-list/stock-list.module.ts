@@ -2,19 +2,19 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
-import { StockModule } from '../../../templates/stock/stock.module';
+import { QuoteModule } from '../../../templates/quote/quote.module';
 import { StockListComponent } from './stock-list.component';
-import { StockService } from '../stock.service';
+import { QuoteService } from '../quote.service';
 
 @NgModule({
   imports: [
     CommonModule,
-    StockModule,
+    QuoteModule,
     RouterModule.forChild([
       { path: '', component: StockListComponent, pathMatch: 'full'}
     ])
   ],
   declarations: [StockListComponent],
-  providers: [StockService]
+  providers: [QuoteService]
 })
 export class StockListModule { }

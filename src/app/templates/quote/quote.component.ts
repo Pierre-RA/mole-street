@@ -4,21 +4,19 @@ import { Router } from '@angular/router';
 import { DailyQuote, QuarterlyQuote } from '../../../shared';
 
 @Component({
-  selector: 'app-template-stock',
-  templateUrl: './stock.component.html',
-  styleUrls: ['./stock.component.scss']
+  selector: 'app-template-quote',
+  templateUrl: './quote.component.html',
+  styleUrls: ['./quote.component.scss']
 })
-export class StockComponent implements OnInit {
+export class QuoteComponent implements OnInit {
 
-  @Input('stock') stock: DailyQuote;
-  @Input('isList') isList: boolean;
+  @Input('quote') quote: DailyQuote;
+  @Input('click') click: boolean;
   @Input('small') small: boolean;
   last: QuarterlyQuote;
   lastTime: Date;
 
-  constructor(
-    private router: Router
-  ) {}
+  constructor(private router: Router) { }
 
   ngOnInit() {
     this.setLast();
@@ -33,18 +31,18 @@ export class StockComponent implements OnInit {
   }
 
   go() {
-    if (this.isList) {
-      this.router.navigate(['stocks', this.stock.symbol]);
+    if (this.click) {
+      this.router.navigate(['quote', this.quote.symbol]);
     }
   }
 
    setLast(): void {
     let last: QuarterlyQuote;
-    const time: Date = new Date(this.stock.date);
+    const time: Date = new Date(this.quote.date);
     for (let i = 8; i < 17; i++) {
       for (let j = 0; j < 4; j++) {
-        if (this.stock.hours[i] && this.stock.hours[i][j] && this.stock.hours[i][j].last) {
-          last = this.stock.hours[i][j];
+        if (this.quote.hours[i] && this.quote.hours[i][j] && this.quote.hours[i][j].last) {
+          last = this.quote.hours[i][j];
           time.setHours(i);
           time.setMinutes(j * 15);
         }

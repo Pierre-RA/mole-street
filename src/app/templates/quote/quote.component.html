@@ -1,18 +1,18 @@
-<div *ngIf="stock && !small" class="template-stock" [ngClass]="{'stock-pad': isList}">
-  <ng-container *ngIf="!isList">
+<div *ngIf="quote && !small" class="template-quote" [ngClass]="{'quote-pad': click}">
+  <ng-container *ngIf="!click">
     <h2>
-      {{stock.name | uppercase }} ({{stock.symbol}})
+      {{quote.name | uppercase }} ({{quote.symbol}})
     </h2>
     <p>
-      <a routerLink="/stocks">Back to list</a>
+      <a routerLink="/quotes">Back to list</a>
     </p>
   </ng-container>
 
-  <div class="stock-title" (click)="go()">
-    <p class="stock-name">
-      {{stock.name | uppercase }} ({{stock.symbol}})
+  <div class="quote-title" (click)="go()">
+    <p class="quote-name">
+      {{quote.name | uppercase }} ({{quote.symbol}})
     </p>
-    <p class="stock-last">
+    <p class="quote-last">
       {{last.last}}
       <span [ngClass]="{'text-success': last.change > 0, 'text-danger': last.change < 0}">
         {{last.change}}
@@ -24,7 +24,7 @@
     <p>
       Last Trade Time: {{lastTime | date:'medium'}}
     </p>
-    <div class="row stock-table" *ngIf="!isList">
+    <div class="row quote-table" *ngIf="!click">
       <div class="col-xs-6 col-sm-4 col-md-3">
         <span>Last</span>
         {{last.last}}
@@ -61,12 +61,12 @@
   </div>
 </div>
 
-<div *ngIf="stock && small"
+<div *ngIf="quote && small"
   (click)="go()"
-  class="template-stock-small"
+  class="template-quote-small"
   [ngClass]="{'text-success': last.change > 0, 'text-danger': last.change < 0}">
   <p>
-    {{stock.symbol}}
+    {{quote.symbol}}
     <span>{{last.last}}</span>
   </p>
   <p>
@@ -76,3 +76,4 @@
     ({{getChange()}})
   </p>
 </div>
+

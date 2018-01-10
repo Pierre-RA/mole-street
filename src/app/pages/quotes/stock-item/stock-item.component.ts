@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { DatePipe } from '@angular/common';
 
 import { Chart, ChartData, DailyQuote } from '../../../../shared';
-import { StockService } from '../stock.service';
+import { QuoteService } from '../quote.service';
 
 @Component({
   selector: 'app-stock-item',
@@ -22,14 +22,14 @@ export class StockItemComponent implements OnInit {
   };
 
   constructor(
-    private stockService: StockService,
+    private quoteService: QuoteService,
     private activatedRoute: ActivatedRoute,
     private datePipe: DatePipe
   ) { }
 
   ngOnInit() {
     if (this.activatedRoute.snapshot.params['id']) {
-      this.stockService.getStock(this.activatedRoute.snapshot.params['id']).subscribe(data => {
+      this.quoteService.getQuote(this.activatedRoute.snapshot.params['id']).subscribe(data => {
         this.loaded = true;
         this.stocks = data;
         this.parseStocks();
