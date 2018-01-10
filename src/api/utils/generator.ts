@@ -24,7 +24,7 @@ export class Generator {
       date: day.toString(),
       symbol: Text.getUniqueInitials(adj + ' ' + name, list),
       indicators: ['MS-ALL', type],
-      amount: Random.getInt(1000, 10000) * 100,
+      amount: Random.getInt(1000, 59999) * 1000,
       hours: Text.getEmptyHours(),
     };
     return Text.insertAtQuote(quote, {
