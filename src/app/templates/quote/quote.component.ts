@@ -25,7 +25,7 @@ export class QuoteComponent implements OnInit {
   getChange() {
     let change = 0;
     if (this.last.change !== 0) {
-      change = (this.last.last / this.last.prev - 1) * 100;
+      change = (this.last.last / this.last.open - 1) * 100;
     }
     return change > 0 ? '+' + change.toFixed(2) + '%' : change.toFixed(2) + '%';
   }

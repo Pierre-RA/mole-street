@@ -77,31 +77,68 @@ export class Evaluator {
     const lastQuarter = quarter - 1 < 0 ? 3 : quarter - 1;
     const lastHour = quarter === 3 ? hour - 1 : hour;
     let tmp: QuarterlyQuote;
-    DBQuote.find({ date: day }).sort({ isIndex: 1 })
+    const indices = {};
+    DBQuote.find({ date: day, isIndex: false })
       .then(doc => {
         const bulk = DBQuote.collection.initializeOrderedBulkOp();
         doc.forEach(quote => {
-          if (!quote.isIndex) {
-            tmp = evalQuarterly(getLastQuote(quote));
-            bulk.find({ symbol: quote.symbol }).update({ $set: {
-              [quarterly]: tmp
-            }});
-          } else {
-            // TODO: adapt index
-            bulk.find({ symbol: quote.symbol }).update({ $set: {
-              [quarterly]: getLastQuote(quote)
-            }});
-          }
+          tmp = evalQuarterly(getLastQuote(quote));
+          bulk.find({ symbol: quote.symbol }).update({ $set: {
+            [quarterly]: tmp
+          }});
+          quote.indicators.forEach(index => {
+            if (!indices[index]) {
+              indices[index] = 0;
+            }
+            indices[index] += (tmp.last * quote.amount);
+          });
         });
         return bulk.execute();
       })
       .then(() => {
-        // return DBStock.find({ date: day });
+        return DBQuote.find({ date: day, isIndex: true });
+      })
+      .then(doc => {
+        const bulk = DBQuote.collection.initializeOrderedBulkOp();
+        doc.forEach(quote => {
+          tmp = evalIndex(indices[quote.symbol], getLastQuote(quote));
+          bulk.find({ symbol: quote.symbol }).update({ $set: {
+            [quarterly]: tmp
+          }});
+        });
+        return bulk.execute();
+      })
+      .then(() => {
+        // Done
       })
       .catch(err => {
         console.error(err);
       });
   }
+}
+
+/**
+ * evalIndex(value: number, quote: QuarterlyQuote): QuarterlyQuote
+ */
+function evalIndex(value: number, quote: QuarterlyQuote): QuarterlyQuote {
+  let last;
+  if (quote.volume > 0) {
+    last = (value / quote.volume) * quote.last;
+  } else {
+    last = 100;
+    quote.volume = value || 0;
+  }
+
+  const result = {
+    volume: quote.volume,
+    open: quote.open,
+    high: last > quote.high ? last : quote.high,
+    low: last < quote.low ? last : quote.low,
+    last: last,
+    prev: quote.last,
+    change: +(last - quote.open).toFixed(2)
+  };
+  return result;
 }
 
 /**
@@ -113,13 +150,13 @@ function evalQuarterly(quote: QuarterlyQuote): QuarterlyQuote {
   let luck = 0.5;
 
   // Positive outcome
-  if (quote.prev !== 0 && quote.last > quote.prev) {
-    luck = 0.15;
+  if (quote.prev !== 0 && quote.last < quote.prev) {
+    luck = 0.45;
   }
 
   // Negative outcome
   if (quote.prev !== 0 && quote.last > quote.prev) {
-    luck = 0.85;
+    luck = 0.55;
   }
 
   // Luck intervention
@@ -175,6 +212,7 @@ function cloneQuote(quote: DailyQuote): DailyQuote {
   };
   const last = getLastQuote(quote);
   last.open = last.last;
+  last.change = 0;
   result.hours[8][0] = last;
   result.hours[hour][quarter] = last;
   return result;
