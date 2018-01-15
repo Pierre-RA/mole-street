@@ -151,12 +151,12 @@ function evalQuarterly(quote: QuarterlyQuote): QuarterlyQuote {
 
   // Positive outcome
   if (quote.prev !== 0 && quote.last < quote.prev) {
-    luck = 0.45;
+    luck = 0.495;
   }
 
   // Negative outcome
   if (quote.prev !== 0 && quote.last > quote.prev) {
-    luck = 0.55;
+    luck = 0.505;
   }
 
   // Luck intervention
