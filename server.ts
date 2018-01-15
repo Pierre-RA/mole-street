@@ -6,6 +6,8 @@ import { enableProdMode } from '@angular/core';
 import * as express from 'express';
 import * as dotenv from 'dotenv';
 import * as mongoose from 'mongoose';
+import * as bodyParser from 'body-parser';
+import * as passport from 'passport';
 import { join } from 'path';
 import { readFileSync } from 'fs';
 import Routes from './src/api/routes';
@@ -60,6 +62,10 @@ app.engine('html', ngExpressEngine({
 
 app.set('view engine', 'html');
 app.set('views', join(DIST_FOLDER, 'browser'));
+
+app.use(passport.initialize());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Rest API
 app.use('/api/', Routes);
