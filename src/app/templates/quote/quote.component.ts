@@ -15,19 +15,13 @@ export class QuoteComponent implements OnInit {
   @Input('small') small: boolean;
   last: QuarterlyQuote;
   lastTime: Date;
+  change: number;
+  changePercent: string;
 
   constructor(private router: Router) { }
 
   ngOnInit() {
     this.setLast();
-  }
-
-  getChange() {
-    let change = 0;
-    if (this.last.change !== 0) {
-      change = (this.last.last / this.last.open - 1) * 100;
-    }
-    return change > 0 ? '+' + change.toFixed(2) + '%' : change.toFixed(2) + '%';
   }
 
   go() {
@@ -50,6 +44,9 @@ export class QuoteComponent implements OnInit {
     }
     this.last = last;
     this.lastTime = time;
+    this.change = +(last.last - last.prev).toFixed(2);
+    const tmp = (last.last / this.quote.open - 1) * 100;
+    this.changePercent = tmp > 0 ? '+' + tmp.toFixed(2) + '%' : tmp.toFixed(2) + '%';
   }
 
 }

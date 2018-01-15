@@ -26,7 +26,7 @@ router.get('/', (req: Request, res: Response) => {
     hours = 16;
     quarter = 3;
   }
-  const projection = '_id name symbol date indicators isIndex amount hours.' + hours + '.' + quarter;
+  const projection = '_id name symbol date indicators isIndex amount open high low hours.' + hours + '.' + quarter;
   DBQuote.find({ date: date }, projection)
     .then(doc => {
       res.json(doc);
@@ -52,7 +52,7 @@ router.get('/by-indicator/:symbol', (req: Request, res: Response) => {
     hours = 8;
     quarter = 0;
   }
-  const projection = '_id name symbol date indicators isIndex amount hours.' + hours + '.' + quarter;
+  const projection = '_id name symbol date indicators isIndex amount open high low hours.' + hours + '.' + quarter;
   DBQuote.find({ date: date, indicators: req.params.symbol }, projection)
     .then(doc => {
       res.json(doc);
