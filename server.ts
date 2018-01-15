@@ -6,10 +6,14 @@ import { enableProdMode } from '@angular/core';
 import * as express from 'express';
 import * as dotenv from 'dotenv';
 import * as mongoose from 'mongoose';
+import * as bodyParser from 'body-parser';
+import * as passport from 'passport';
+import { Strategy } from 'passport-jwt';
 import { join } from 'path';
 import { readFileSync } from 'fs';
 import Routes from './src/api/routes';
-import { Crontab } from './src/api/utils';
+import { Crontab, JwtOptions } from './src/api/utils';
+import { DBUser } from './src/api/db';
 
 // Enable dotenv configuration
 dotenv.config();
@@ -29,6 +33,21 @@ mongoose.connection.on('error', () => {
 mongoose.connection.on('open', () => {
   console.log('*** MongoDB *** connection is open.');
 });
+
+// JWT Strategy
+const strategy = new Strategy(JwtOptions, (payload: any, next: any) => {
+  DBUser.findOne({ _id: payload.id })
+    .then(user => {
+      if (!user) {
+        return next(null, false);
+      }
+      return next(null, user);
+    })
+    .catch(err => {
+      return next(err, false);
+    });
+});
+passport.use(strategy);
 
 // Crontab
 Crontab.executeAll();
@@ -60,6 +79,10 @@ app.engine('html', ngExpressEngine({
 
 app.set('view engine', 'html');
 app.set('views', join(DIST_FOLDER, 'browser'));
+
+app.use(passport.initialize());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Rest API
 app.use('/api/', Routes);

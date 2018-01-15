@@ -6,8 +6,17 @@ interface UserModel extends User, Mongoose.Document {}
 
 export let userSchema = new Mongoose.Schema({
   name: String,
-  password: String,
-  email: String,
+  password: {
+    type: String,
+    select: false,
+    required: true,
+  },
+  isAdmin: Boolean,
+  email: {
+    type: String,
+    required: true,
+    unique: true
+  },
   balance: Number,
   portfolio: [{
     initials: String,

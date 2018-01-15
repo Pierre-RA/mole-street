@@ -1,8 +1,9 @@
 import { Request, Response, Router } from 'express';
-
+import * as passport from 'passport';
 import { Generator, Evaluator } from '../utils';
 import { DailyQuote } from '../../shared';
 import { DBQuote } from '../db';
+import isAdmin from '../middlewares/is-admin';
 const pkg = require('../../../package.json');
 
 const router = Router();
@@ -22,7 +23,7 @@ router.get('/', (req: Request, res: Response) => {
  * POST /random
  * Add random stocks to the list
  */
-router.post('/random', (req: Request, res: Response) => {
+router.post('/random', passport.authenticate('jwt', {session: false}), isAdmin, (req: Request, res: Response) => {
   const length = req.query['length'] || 50;
   DBQuote.find().distinct('symbol')
     .then(doc => {
