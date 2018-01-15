@@ -83,7 +83,7 @@ export class Evaluator {
         const bulk = DBQuote.collection.initializeOrderedBulkOp();
         doc.forEach(quote => {
           tmp = evalQuarterly(getLastQuote(quote));
-          bulk.find({ symbol: quote.symbol }).update({ $set: {
+          bulk.find({ date: day.toDate(), symbol: quote.symbol }).update({ $set: {
             [quarterly]: tmp
           }});
           quote.indicators.forEach(index => {
@@ -102,7 +102,7 @@ export class Evaluator {
         const bulk = DBQuote.collection.initializeOrderedBulkOp();
         doc.forEach(quote => {
           tmp = evalIndex(indices[quote.symbol], getLastQuote(quote));
-          bulk.find({ symbol: quote.symbol }).update({ $set: {
+          bulk.find({ date: day.toDate(), symbol: quote.symbol }).update({ $set: {
             [quarterly]: tmp
           }});
         });
@@ -123,7 +123,7 @@ export class Evaluator {
 function evalIndex(value: number, quote: QuarterlyQuote): QuarterlyQuote {
   let last;
   if (quote.volume > 0) {
-    last = (value / quote.volume) * quote.last;
+    last = +((value / quote.volume) * quote.last).toFixed(2);
   } else {
     last = 100;
     quote.volume = value || 0;
