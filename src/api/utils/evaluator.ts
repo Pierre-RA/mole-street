@@ -76,21 +76,23 @@ export class Evaluator {
     const quarterly = 'hours.' + hour + '.' + quarter;
     const lastQuarter = quarter - 1 < 0 ? 3 : quarter - 1;
     const lastHour = quarter === 3 ? hour - 1 : hour;
-    let tmp: QuarterlyQuote;
+    let next: QuarterlyQuote;
     const indices = {};
     DBQuote.find({ date: day, isIndex: false })
       .then(doc => {
         const bulk = DBQuote.collection.initializeOrderedBulkOp();
         doc.forEach(quote => {
-          tmp = evalQuarterly(getLastQuote(quote));
+          next = evalQuarterly(getLastQuote(quote));
           bulk.find({ date: day.toDate(), symbol: quote.symbol }).update({ $set: {
-            [quarterly]: tmp
+            [quarterly]: next,
+            high: next.last > quote.high ? next.last : quote.high,
+            low: next.last < quote.low ? next.last : quote.low
           }});
           quote.indicators.forEach(index => {
             if (!indices[index]) {
               indices[index] = 0;
             }
-            indices[index] += (tmp.last * quote.amount);
+            indices[index] += (next.last * quote.amount);
           });
         });
         return bulk.execute();
@@ -101,9 +103,11 @@ export class Evaluator {
       .then(doc => {
         const bulk = DBQuote.collection.initializeOrderedBulkOp();
         doc.forEach(quote => {
-          tmp = evalIndex(indices[quote.symbol], getLastQuote(quote));
+          next = evalIndex(indices[quote.symbol], getLastQuote(quote));
           bulk.find({ date: day.toDate(), symbol: quote.symbol }).update({ $set: {
-            [quarterly]: tmp
+            [quarterly]: next,
+            high: next.last > quote.high ? next.last : quote.high,
+            low: next.last < quote.low ? next.last : quote.low
           }});
         });
         return bulk.execute();
@@ -131,12 +135,12 @@ function evalIndex(value: number, quote: QuarterlyQuote): QuarterlyQuote {
 
   const result = {
     volume: quote.volume,
-    open: quote.open,
-    high: last > quote.high ? last : quote.high,
-    low: last < quote.low ? last : quote.low,
+    // open: quote.open,
+    // high: last > quote.high ? last : quote.high,
+    // low: last < quote.low ? last : quote.low,
     last: last,
     prev: quote.last,
-    change: +(last - quote.open).toFixed(2)
+    // change: +(last - quote.open).toFixed(2)
   };
   return result;
 }
@@ -151,12 +155,12 @@ function evalQuarterly(quote: QuarterlyQuote): QuarterlyQuote {
 
   // Positive outcome
   if (quote.prev !== 0 && quote.last < quote.prev) {
-    luck = 0.45;
+    luck = 0.495;
   }
 
   // Negative outcome
   if (quote.prev !== 0 && quote.last > quote.prev) {
-    luck = 0.55;
+    luck = 0.505;
   }
 
   // Luck intervention
@@ -182,12 +186,12 @@ function evalQuarterly(quote: QuarterlyQuote): QuarterlyQuote {
 
   const result = {
     volume: quote.volume,
-    open: quote.open,
-    high: last > quote.high ? last : quote.high,
-    low: last < quote.low ? last : quote.low,
+    // open: quote.open,
+    // high: last > quote.high ? last : quote.high,
+    // low: last < quote.low ? last : quote.low,
     last: last,
     prev: quote.last,
-    change: +(last - quote.open).toFixed(2)
+    // change: +(last - quote.open).toFixed(2)
   };
   return result;
 }
@@ -201,6 +205,7 @@ function cloneQuote(quote: DailyQuote): DailyQuote {
   const time = moment();
   const hour = time.get('hours').valueOf();
   const quarter = Math.floor(time.get('minutes').valueOf() / 15);
+  const last = getLastQuote(quote);
   result = {
     name: quote.name,
     symbol: quote.symbol,
@@ -208,11 +213,13 @@ function cloneQuote(quote: DailyQuote): DailyQuote {
     date: moment().startOf('day').toString(),
     indicators: quote.indicators,
     amount: quote.amount,
-    hours: Text.getEmptyHours()
+    hours: Text.getEmptyHours(),
+    open: last.last,
+    high: last.last,
+    low: last.last
   };
-  const last = getLastQuote(quote);
-  last.open = last.last;
-  last.change = 0;
+  // last.open = last.last;
+  // last.change = 0;
   result.hours[8][0] = last;
   result.hours[hour][quarter] = last;
   return result;

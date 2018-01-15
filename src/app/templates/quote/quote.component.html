@@ -14,11 +14,11 @@
     </p>
     <p class="quote-last">
       {{last.last}}
-      <span [ngClass]="{'text-success': last.change > 0, 'text-danger': last.change < 0}">
-        {{last.change}}
+      <span [ngClass]="{'text-success': change > 0, 'text-danger': change < 0}">
+        {{change}}
         <i class="fa fa-lg fa-caret-up" *ngIf="last.change > 0"></i>
         <i class="fa fa-lg fa-caret-down" *ngIf="last.change < 0"></i>
-        ({{getChange()}})
+        ({{changePercent}})
       </span>
     </p>
     <p>
@@ -31,11 +31,11 @@
       </div>
       <div class="col-xs-6 col-sm-4 col-md-3">
         <span>Change</span>
-        {{last.change}}
+        {{change}}
       </div>
       <div class="col-xs-6 col-sm-4 col-md-3">
         <span>Change %</span>
-        {{getChange()}}
+        {{changePercent}}
       </div>
       <div class="col-xs-6 col-sm-4 col-md-3">
         <span>Volume</span>
@@ -43,15 +43,15 @@
       </div>
       <div class="col-xs-6 col-sm-4 col-md-3">
         <span>Open</span>
-        {{last.open}}
+        {{quote.open}}
       </div>
       <div class="col-xs-6 col-sm-4 col-md-3">
         <span>High</span>
-        {{last.high}}
+        {{quote.high}}
       </div>
       <div class="col-xs-6 col-sm-4 col-md-3">
         <span>Low</span>
-        {{last.low}}
+        {{quote.low}}
       </div>
       <div class="col-xs-6 col-sm-4 col-md-3">
         <span>Prev</span>
@@ -64,16 +64,16 @@
 <div *ngIf="quote && small"
   (click)="go()"
   class="template-quote-small"
-  [ngClass]="{'text-success': last.change > 0, 'text-danger': last.change < 0}">
+  [ngClass]="{'text-success': change > 0, 'text-danger': change < 0}">
   <p>
     {{quote.symbol}}
     <span>{{last.last}}</span>
   </p>
   <p>
-    {{last.change}}
-    <i class="fa fa-lg fa-caret-up" *ngIf="last.change > 0"></i>
-    <i class="fa fa-lg fa-caret-down" *ngIf="last.change < 0"></i>
-    ({{getChange()}})
+    {{change}}
+    <i class="fa fa-lg fa-caret-up" *ngIf="change > 0"></i>
+    <i class="fa fa-lg fa-caret-down" *ngIf="change < 0"></i>
+    ({{changePercent}})
   </p>
 </div>
 

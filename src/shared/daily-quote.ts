@@ -7,6 +7,9 @@ export interface DailyQuote {
   isIndex: boolean;
   indicators: Array<string>;
   amount: number;
+  open: number;
+  high: number;
+  low: number;
   hours: {
     8: HourlyQuote,
     9: HourlyQuote,

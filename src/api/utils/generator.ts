@@ -27,15 +27,14 @@ export class Generator {
       indicators: ['MS-ALL', type],
       amount: Random.getInt(1000, 59999) * 1000,
       hours: Text.getEmptyHours(),
+      open: price,
+      high: price,
+      low: price
     };
     return Text.insertAtQuote(quote, {
       volume: quote.amount,
-      open: price,
-      high: price,
-      low: price,
       last: price,
-      prev: 0,
-      change: 0
+      prev: price,
     }, new Date());
   }
 
@@ -63,16 +62,15 @@ export class Generator {
       isIndex: true,
       indicators: [],
       amount: 0,
-      hours: Text.getEmptyHours()
+      hours: Text.getEmptyHours(),
+      open: 100,
+      high: 100,
+      low: 100
     };
     return Text.insertAtQuote(indicator, {
       volume: 0,
-      open: 100,
-      high: 100,
-      low: 100,
       last: 100,
-      prev: 0,
-      change: 0
+      prev: 100
     }, new Date());
   }
 
