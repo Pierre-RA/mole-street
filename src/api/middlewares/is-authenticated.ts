@@ -1,16 +1,15 @@
 import { Request, Response, NextFunction } from 'express';
 
-export default function canRegister(
+export function isAuthenticated(
   req: Request,
   res: Response,
   next: NextFunction
 ) {
-  if (!(req.user && req.user.isAdmin)) {
+  if (!req.user) {
     return res.status(403)
       .json({
-        message: 'Restricted area.'
+        message: 'user is not authenticated'
       });
   }
-
   return next();
 }

@@ -59,6 +59,7 @@
     "@types/dotenv": "^4.0.2",
     "@types/mongoose": "^4.7.30",
     "@types/node": "^8.0.30",
+    "@types/passport-jwt": "^3.0.0",
     "codelyzer": "^4.0.2",
     "cpy-cli": "^1.0.1",
     "express": "^4.15.2",

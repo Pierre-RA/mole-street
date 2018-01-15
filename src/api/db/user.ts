@@ -11,7 +11,12 @@ export let userSchema = new Mongoose.Schema({
     select: false,
     required: true,
   },
-  email: String,
+  isAdmin: Boolean,
+  email: {
+    type: String,
+    required: true,
+    unique: true
+  },
   balance: Number,
   portfolio: [{
     initials: String,
