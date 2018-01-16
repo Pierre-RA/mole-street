@@ -35,6 +35,7 @@ export class Generator {
       volume: quote.amount,
       last: price,
       prev: price,
+      trend: 0
     }, new Date());
   }
 
@@ -70,7 +71,8 @@ export class Generator {
     return Text.insertAtQuote(indicator, {
       volume: 0,
       last: 100,
-      prev: 100
+      prev: 100,
+      trend: 0
     }, new Date());
   }
 

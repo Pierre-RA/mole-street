@@ -28,6 +28,9 @@ export class Evaluator {
         date: {$first: '$date'},
         indicators: {$first: '$indicators'},
         amount: {$first: '$amount'},
+        open: {$first: '$open'},
+        high: {$first: '$high'},
+        low: {$first: '$low'},
         isIndex: {$first: '$isIndex'},
         hours: {$first: '$hours'}
       }
@@ -135,12 +138,9 @@ function evalIndex(value: number, quote: QuarterlyQuote): QuarterlyQuote {
 
   const result = {
     volume: quote.volume,
-    // open: quote.open,
-    // high: last > quote.high ? last : quote.high,
-    // low: last < quote.low ? last : quote.low,
     last: last,
     prev: quote.last,
-    // change: +(last - quote.open).toFixed(2)
+    trend: quote.trend
   };
   return result;
 }
@@ -149,8 +149,8 @@ function evalIndex(value: number, quote: QuarterlyQuote): QuarterlyQuote {
  * evalQuarterly(quote: QuarterlyQuote): QuarterlyQuote
  */
 function evalQuarterly(quote: QuarterlyQuote): QuarterlyQuote {
-  let range = 0.2;
-  let axis = 0.1;
+  let range = 0.02;
+  let axis = 0.01;
   let luck = 0.5;
 
   // Positive outcome
@@ -163,12 +163,15 @@ function evalQuarterly(quote: QuarterlyQuote): QuarterlyQuote {
     luck = 0.505;
   }
 
+  // Trend intervention
+  luck += quote.trend;
+
   // Luck intervention
   const rand = Math.random();
   if (rand > luck) {
-    axis = 0.15;
+    axis = 0.005;
   } else {
-    axis = 0.05;
+    axis = 0.015;
   }
 
   // Critical range
@@ -186,12 +189,9 @@ function evalQuarterly(quote: QuarterlyQuote): QuarterlyQuote {
 
   const result = {
     volume: quote.volume,
-    // open: quote.open,
-    // high: last > quote.high ? last : quote.high,
-    // low: last < quote.low ? last : quote.low,
     last: last,
     prev: quote.last,
-    // change: +(last - quote.open).toFixed(2)
+    trend: quote.trend
   };
   return result;
 }
