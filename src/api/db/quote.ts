@@ -19,198 +19,234 @@ export let quoteSchema = new Mongoose.Schema({
       0: {
         volume: Number,
         last: Number,
-        prev: Number
+        prev: Number,
+        trend: Number
       },
       1: {
         volume: Number,
         last: Number,
-        prev: Number
+        prev: Number,
+        trend: Number
       },
       2: {
         volume: Number,
         last: Number,
-        prev: Number
+        prev: Number,
+        trend: Number
       },
       3: {
         volume: Number,
         last: Number,
-        prev: Number
+        prev: Number,
+        trend: Number
       }
     },
     9: {
       0: {
         volume: Number,
         last: Number,
-        prev: Number
+        prev: Number,
+        trend: Number
       },
       1: {
         volume: Number,
         last: Number,
-        prev: Number
+        prev: Number,
+        trend: Number
       },
       2: {
         volume: Number,
         last: Number,
-        prev: Number
+        prev: Number,
+        trend: Number
       },
       3: {
         volume: Number,
         last: Number,
-        prev: Number
+        prev: Number,
+        trend: Number
       }
     },
     10: {
       0: {
         volume: Number,
         last: Number,
-        prev: Number
+        prev: Number,
+        trend: Number
       },
       1: {
         volume: Number,
         last: Number,
-        prev: Number
+        prev: Number,
+        trend: Number
       },
       2: {
         volume: Number,
         last: Number,
-        prev: Number
+        prev: Number,
+        trend: Number
       },
       3: {
         volume: Number,
         last: Number,
-        prev: Number
+        prev: Number,
+        trend: Number
       }
     },
     11: {
       0: {
         volume: Number,
         last: Number,
-        prev: Number
+        prev: Number,
+        trend: Number
       },
       1: {
         volume: Number,
         last: Number,
-        prev: Number
+        prev: Number,
+        trend: Number
       },
       2: {
         volume: Number,
         last: Number,
-        prev: Number
+        prev: Number,
+        trend: Number
       },
       3: {
         volume: Number,
         last: Number,
-        prev: Number
+        prev: Number,
+        trend: Number
       }
     },
     12: {
       0: {
         volume: Number,
         last: Number,
-        prev: Number
+        prev: Number,
+        trend: Number
       },
       1: {
         volume: Number,
         last: Number,
-        prev: Number
+        prev: Number,
+        trend: Number
       },
       2: {
         volume: Number,
         last: Number,
-        prev: Number
+        prev: Number,
+        trend: Number
       },
       3: {
         volume: Number,
         last: Number,
-        prev: Number
+        prev: Number,
+        trend: Number
       }
     },
     13: {
       0: {
         volume: Number,
         last: Number,
-        prev: Number
+        prev: Number,
+        trend: Number
       },
       1: {
         volume: Number,
         last: Number,
-        prev: Number
+        prev: Number,
+        trend: Number
       },
       2: {
         volume: Number,
         last: Number,
-        prev: Number
+        prev: Number,
+        trend: Number
       },
       3: {
         volume: Number,
         last: Number,
-        prev: Number
+        prev: Number,
+        trend: Number
       }
     },
     14: {
       0: {
         volume: Number,
         last: Number,
-        prev: Number
+        prev: Number,
+        trend: Number
       },
       1: {
         volume: Number,
         last: Number,
-        prev: Number
+        prev: Number,
+        trend: Number
       },
       2: {
         volume: Number,
         last: Number,
-        prev: Number
+        prev: Number,
+        trend: Number
       },
       3: {
         volume: Number,
         last: Number,
-        prev: Number
+        prev: Number,
+        trend: Number
       }
     },
     15: {
       0: {
         volume: Number,
         last: Number,
-        prev: Number
+        prev: Number,
+        trend: Number
       },
       1: {
         volume: Number,
         last: Number,
-        prev: Number
+        prev: Number,
+        trend: Number
       },
       2: {
         volume: Number,
         last: Number,
-        prev: Number
+        prev: Number,
+        trend: Number
       },
       3: {
         volume: Number,
         last: Number,
-        prev: Number
+        prev: Number,
+        trend: Number
       }
     },
     16: {
       0: {
         volume: Number,
         last: Number,
-        prev: Number
+        prev: Number,
+        trend: Number
       },
       1: {
         volume: Number,
         last: Number,
-        prev: Number
+        prev: Number,
+        trend: Number
       },
       2: {
         volume: Number,
         last: Number,
-        prev: Number
+        prev: Number,
+        trend: Number
       },
       3: {
         volume: Number,
         last: Number,
-        prev: Number
+        prev: Number,
+        trend: Number
       }
     }
   }
