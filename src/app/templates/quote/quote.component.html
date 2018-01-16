@@ -14,11 +14,11 @@
     </p>
     <p class="quote-last">
       {{last.last}}
-      <span [ngClass]="{'text-success': change > 0, 'text-danger': change < 0}">
-        {{change}}
-        <i class="fa fa-lg fa-caret-up" *ngIf="last.change > 0"></i>
-        <i class="fa fa-lg fa-caret-down" *ngIf="last.change < 0"></i>
-        ({{changePercent}})
+      <span [ngClass]="{'text-success': changePrev.value > 0, 'text-danger': changePrev.value < 0}">
+        {{changePrev.value | number}}
+        <i class="fa fa-lg fa-caret-up" *ngIf="changePrev.value > 0"></i>
+        <i class="fa fa-lg fa-caret-down" *ngIf="changePrev.value < 0"></i>
+        ({{changePrev.percent | number}}%)
       </span>
     </p>
     <p>
@@ -31,11 +31,11 @@
       </div>
       <div class="col-xs-6 col-sm-4 col-md-3">
         <span>Change</span>
-        {{change}}
+        {{changePrev.value}}
       </div>
       <div class="col-xs-6 col-sm-4 col-md-3">
         <span>Change %</span>
-        {{changePercent}}
+        {{changePrev.percent}}%
       </div>
       <div class="col-xs-6 col-sm-4 col-md-3">
         <span>Volume</span>
@@ -64,16 +64,16 @@
 <div *ngIf="quote && small"
   (click)="go()"
   class="template-quote-small"
-  [ngClass]="{'text-success': change > 0, 'text-danger': change < 0}">
+  [ngClass]="{'text-success': changeOpen.value > 0, 'text-danger': changeOpen.value < 0}">
   <p>
     {{quote.symbol}}
     <span>{{last.last}}</span>
   </p>
   <p>
-    {{change}}
-    <i class="fa fa-lg fa-caret-up" *ngIf="change > 0"></i>
-    <i class="fa fa-lg fa-caret-down" *ngIf="change < 0"></i>
-    ({{changePercent}})
+    {{changeOpen.value}}
+    <i class="fa fa-lg fa-caret-up" *ngIf="changeOpen.value > 0"></i>
+    <i class="fa fa-lg fa-caret-down" *ngIf="changeOpen.value < 0"></i>
+    ({{changeOpen.percent | number}}%)
   </p>
 </div>
 
