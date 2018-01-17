@@ -75,6 +75,9 @@ export class Evaluator {
    */
   static evalSixthly(): Promise<boolean> {
     const time = moment();
+    if (time.get('hours').valueOf() < 8 || time.get('hours').valueOf() > 16) {
+      return Promise.resolve(false);
+    }
     const hour = time.get('hours').valueOf();
     const sixth = Math.floor(time.get('minutes').valueOf() / 10);
     const day = time.startOf('day');
