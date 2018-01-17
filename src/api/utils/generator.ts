@@ -1,6 +1,6 @@
 import * as moment from 'moment';
 
-import { QuarterlyQuote, DailyQuote } from '../../shared';
+import { SixthlyQuote, DailyQuote } from '../../shared';
 import { Random } from './random';
 import { Text } from './text';
 

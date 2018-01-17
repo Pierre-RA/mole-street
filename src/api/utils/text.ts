@@ -1,4 +1,4 @@
-import { DailyQuote, QuarterlyQuote } from '../../shared';
+import { DailyQuote, SixthlyQuote } from '../../shared';
 
 export class Text {
 
@@ -24,30 +24,16 @@ export class Text {
     return null;
   }
 
-  static insertAtQuote(quote: DailyQuote, values: QuarterlyQuote, date: Date): DailyQuote {
+  static insertAtQuote(quote: DailyQuote, values: SixthlyQuote, date: Date): DailyQuote {
     let hour = date.getHours();
     let minutes = date.getMinutes();
     if (hour < 8 || hour > 16) {
       hour = 8;
       minutes = 0;
     }
-    quote.hours[hour][this.getQuarter(minutes)] = values;
+    const sixth = Math.floor(minutes / 10);
+    quote.hours[hour][sixth] = values;
     return quote;
-  }
-
-  static getQuarter(minutes: number): number {
-    if (minutes < 15) {
-      return 0;
-    }
-    if (minutes < 30) {
-      return 1;
-    }
-    if (minutes < 45) {
-      return 2;
-    }
-    if (minutes < 60) {
-      return 3;
-    }
   }
 
   static getEmptyHours () {
@@ -55,15 +41,11 @@ export class Text {
     result = {};
     for (let i = 8; i < 17; i++) {
       result[i] = {};
-      for (let j = 0; j < 4; j++) {
+      for (let j = 0; j < 6; j++) {
         result[i][j] = {
           volume: null,
-          open: null,
-          high: null,
-          low: null,
           last: null,
-          prev: null,
-          change: null
+          prev: null
         };
       }
     }
