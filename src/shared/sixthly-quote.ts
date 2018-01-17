@@ -1,4 +1,4 @@
-export interface QuarterlyQuote {
+export interface SixthlyQuote {
   volume: number;
   last: number;
   prev: number;

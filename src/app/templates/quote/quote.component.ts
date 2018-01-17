@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { DailyQuote, QuarterlyQuote } from '../../../shared';
+import { DailyQuote, SixthlyQuote } from '../../../shared';
 
 @Component({
   selector: 'app-template-quote',
@@ -13,7 +13,7 @@ export class QuoteComponent implements OnInit {
   @Input('quote') quote: DailyQuote;
   @Input('click') click: boolean;
   @Input('small') small: boolean;
-  last: QuarterlyQuote;
+  last: SixthlyQuote;
   lastTime: Date;
   changePrev: {
     value: number,
@@ -45,10 +45,10 @@ export class QuoteComponent implements OnInit {
   }
 
    setLast(): void {
-    let last: QuarterlyQuote;
+    let last: SixthlyQuote;
     const time: Date = new Date(this.quote.date);
     for (let i = 8; i < 17; i++) {
-      for (let j = 0; j < 4; j++) {
+      for (let j = 0; j < 6; j++) {
         if (this.quote.hours[i] && this.quote.hours[i][j] && this.quote.hours[i][j].last) {
           last = this.quote.hours[i][j];
           time.setHours(i);

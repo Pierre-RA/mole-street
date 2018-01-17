@@ -39,6 +39,18 @@ export let quoteSchema = new Mongoose.Schema({
         last: Number,
         prev: Number,
         trend: Number
+      },
+      4: {
+        volume: Number,
+        last: Number,
+        prev: Number,
+        trend: Number
+      },
+      5: {
+        volume: Number,
+        last: Number,
+        prev: Number,
+        trend: Number
       }
     },
     9: {
@@ -61,6 +73,18 @@ export let quoteSchema = new Mongoose.Schema({
         trend: Number
       },
       3: {
+        volume: Number,
+        last: Number,
+        prev: Number,
+        trend: Number
+      },
+      4: {
+        volume: Number,
+        last: Number,
+        prev: Number,
+        trend: Number
+      },
+      5: {
         volume: Number,
         last: Number,
         prev: Number,
@@ -91,6 +115,18 @@ export let quoteSchema = new Mongoose.Schema({
         last: Number,
         prev: Number,
         trend: Number
+      },
+      4: {
+        volume: Number,
+        last: Number,
+        prev: Number,
+        trend: Number
+      },
+      5: {
+        volume: Number,
+        last: Number,
+        prev: Number,
+        trend: Number
       }
     },
     11: {
@@ -113,6 +149,18 @@ export let quoteSchema = new Mongoose.Schema({
         trend: Number
       },
       3: {
+        volume: Number,
+        last: Number,
+        prev: Number,
+        trend: Number
+      },
+      4: {
+        volume: Number,
+        last: Number,
+        prev: Number,
+        trend: Number
+      },
+      5: {
         volume: Number,
         last: Number,
         prev: Number,
@@ -143,6 +191,18 @@ export let quoteSchema = new Mongoose.Schema({
         last: Number,
         prev: Number,
         trend: Number
+      },
+      4: {
+        volume: Number,
+        last: Number,
+        prev: Number,
+        trend: Number
+      },
+      5: {
+        volume: Number,
+        last: Number,
+        prev: Number,
+        trend: Number
       }
     },
     13: {
@@ -165,6 +225,18 @@ export let quoteSchema = new Mongoose.Schema({
         trend: Number
       },
       3: {
+        volume: Number,
+        last: Number,
+        prev: Number,
+        trend: Number
+      },
+      4: {
+        volume: Number,
+        last: Number,
+        prev: Number,
+        trend: Number
+      },
+      5: {
         volume: Number,
         last: Number,
         prev: Number,
@@ -195,6 +267,18 @@ export let quoteSchema = new Mongoose.Schema({
         last: Number,
         prev: Number,
         trend: Number
+      },
+      4: {
+        volume: Number,
+        last: Number,
+        prev: Number,
+        trend: Number
+      },
+      5: {
+        volume: Number,
+        last: Number,
+        prev: Number,
+        trend: Number
       }
     },
     15: {
@@ -221,6 +305,18 @@ export let quoteSchema = new Mongoose.Schema({
         last: Number,
         prev: Number,
         trend: Number
+      },
+      4: {
+        volume: Number,
+        last: Number,
+        prev: Number,
+        trend: Number
+      },
+      5: {
+        volume: Number,
+        last: Number,
+        prev: Number,
+        trend: Number
       }
     },
     16: {
@@ -243,6 +339,18 @@ export let quoteSchema = new Mongoose.Schema({
         trend: Number
       },
       3: {
+        volume: Number,
+        last: Number,
+        prev: Number,
+        trend: Number
+      },
+      4: {
+        volume: Number,
+        last: Number,
+        prev: Number,
+        trend: Number
+      },
+      5: {
         volume: Number,
         last: Number,
         prev: Number,

@@ -1,6 +1,6 @@
 import * as moment from 'moment';
 
-import { QuarterlyQuote, DailyQuote } from '../../shared';
+import { SixthlyQuote, DailyQuote } from '../../shared';
 import { DBQuote } from '../db';
 import { Random } from './random';
 import { Text } from './text';
@@ -15,10 +15,10 @@ export class Evaluator {
    * evalFirst(): void
    * Eval stocks when the server launch
    */
-  static evalFirst(): void {
+  static evalFirst(): Promise<boolean> {
     let hasBasicIndices = false;
     // Get all latest stocks
-    DBQuote.aggregate([{
+    return DBQuote.aggregate([{
       $sort: { symbol: 1, date: -1}
     }, {
       $group: {
@@ -61,33 +61,35 @@ export class Evaluator {
         if (doc) {
           console.log('*** info    *** ' + doc.length + ' indices have been updated');
         }
+        return true;
       })
       .catch(err => {
         console.error(err);
+        return false;
       });
   }
 
   /**
-   * evalQuarterly(): void
+   * evalSixthly(): void
    * Eval during the day
    */
-  static evalQuarterly(): void {
+  static evalSixthly(): Promise<boolean> {
     const time = moment();
     const hour = time.get('hours').valueOf();
-    const quarter = Math.floor(time.get('minutes').valueOf() / 15);
+    const sixth = Math.floor(time.get('minutes').valueOf() / 10);
     const day = time.startOf('day');
-    const quarterly = 'hours.' + hour + '.' + quarter;
-    const lastQuarter = quarter - 1 < 0 ? 3 : quarter - 1;
-    const lastHour = quarter === 3 ? hour - 1 : hour;
-    let next: QuarterlyQuote;
+    const sixthly = 'hours.' + hour + '.' + sixth;
+    const lastQuarter = sixth - 1 < 0 ? 5 : sixth - 1;
+    const lastHour = sixth === 5 ? hour - 1 : hour;
+    let next: SixthlyQuote;
     const indices = {};
-    DBQuote.find({ date: day, isIndex: false })
+    return DBQuote.find({ date: day, isIndex: false })
       .then(doc => {
         const bulk = DBQuote.collection.initializeOrderedBulkOp();
         doc.forEach(quote => {
-          next = evalQuarterly(getLastQuote(quote));
+          next = evalSixthly(getLastQuote(quote));
           bulk.find({ date: day.toDate(), symbol: quote.symbol }).update({ $set: {
-            [quarterly]: next,
+            [sixthly]: next,
             high: next.last > quote.high ? next.last : quote.high,
             low: next.last < quote.low ? next.last : quote.low
           }});
@@ -108,7 +110,7 @@ export class Evaluator {
         doc.forEach(quote => {
           next = evalIndex(indices[quote.symbol], getLastQuote(quote));
           bulk.find({ date: day.toDate(), symbol: quote.symbol }).update({ $set: {
-            [quarterly]: next,
+            [sixthly]: next,
             high: next.last > quote.high ? next.last : quote.high,
             low: next.last < quote.low ? next.last : quote.low
           }});
@@ -117,17 +119,19 @@ export class Evaluator {
       })
       .then(() => {
         // Done
+        return true;
       })
       .catch(err => {
         console.error(err);
+        return false;
       });
   }
 }
 
 /**
- * evalIndex(value: number, quote: QuarterlyQuote): QuarterlyQuote
+ * evalIndex(value: number, quote: SixthlyQuote): SixthlyQuote
  */
-function evalIndex(value: number, quote: QuarterlyQuote): QuarterlyQuote {
+function evalIndex(value: number, quote: SixthlyQuote): SixthlyQuote {
   let last;
   if (quote.volume > 0) {
     last = +((value / quote.volume) * quote.last).toFixed(2);
@@ -146,9 +150,9 @@ function evalIndex(value: number, quote: QuarterlyQuote): QuarterlyQuote {
 }
 
 /**
- * evalQuarterly(quote: QuarterlyQuote): QuarterlyQuote
+ * evalQuarterly(quote: SixthlyQuote): SixthlyQuote
  */
-function evalQuarterly(quote: QuarterlyQuote): QuarterlyQuote {
+function evalSixthly(quote: SixthlyQuote): SixthlyQuote {
   let range = 0.02;
   let axis = 0.01;
   let luck = 0.5;
@@ -204,7 +208,7 @@ function cloneQuote(quote: DailyQuote): DailyQuote {
   let result: DailyQuote;
   const time = moment();
   const hour = time.get('hours').valueOf();
-  const quarter = Math.floor(time.get('minutes').valueOf() / 15);
+  const sixth = Math.floor(time.get('minutes').valueOf() / 10);
   const last = getLastQuote(quote);
   result = {
     name: quote.name,
@@ -218,20 +222,18 @@ function cloneQuote(quote: DailyQuote): DailyQuote {
     high: last.last,
     low: last.last
   };
-  // last.open = last.last;
-  // last.change = 0;
   result.hours[8][0] = last;
-  result.hours[hour][quarter] = last;
+  result.hours[hour][sixth] = last;
   return result;
 }
 
 /**
- * getLastQuote(quote: DailyQuote): QuarterlyQuote
+ * getLastQuote(quote: DailyQuote): SixthlyQuote
  */
-function getLastQuote(quote: DailyQuote): QuarterlyQuote {
-  let last: QuarterlyQuote;
+function getLastQuote(quote: DailyQuote): SixthlyQuote {
+  let last: SixthlyQuote;
   for (let i = 8; i < 17; i++) {
-    for (let j = 0; j < 4; j++) {
+    for (let j = 0; j < 6; j++) {
       if (quote.hours[i][j] && quote.hours[i][j].last) {
         last = quote.hours[i][j];
       }
