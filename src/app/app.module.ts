@@ -17,6 +17,10 @@ import { AppComponent } from './app.component';
     HttpClientModule,
     RouterModule.forRoot([
       { path: '', loadChildren: './pages/landing/landing.module#LandingModule', pathMatch: 'full'},
+      { path: 'sign-in', loadChildren: './pages/sign-in/sign-in.module#SignInModule', pathMatch: 'full' },
+      { path: 'sign-up', loadChildren: './pages/sign-up/sign-up.module#SignUpModule', pathMatch: 'full' },
+      { path: 'users', loadChildren: './pages/users/users-list/users-list.module#UsersListModule', pathMatch: 'full' },
+      { path: 'users/:id', loadChildren: './pages/users/users-item/users-item.module#UsersItemModule', pathMatch: 'full' },
       { path: 'quotes', loadChildren: './pages/quotes/stock-list/stock-list.module#StockListModule', pathMatch: 'full'},
       { path: 'quote/:id', loadChildren: './pages/quotes/stock-item/stock-item.module#StockItemModule'}
     ])
