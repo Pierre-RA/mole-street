@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
-
+import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -15,6 +15,7 @@ import { AppComponent } from './app.component';
     BrowserModule.withServerTransition({appId: 'my-app'}),
     BrowserAnimationsModule,
     HttpClientModule,
+    FormsModule,
     RouterModule.forRoot([
       { path: '', loadChildren: './pages/landing/landing.module#LandingModule', pathMatch: 'full'},
       { path: 'sign-in', loadChildren: './pages/sign-in/sign-in.module#SignInModule', pathMatch: 'full' },

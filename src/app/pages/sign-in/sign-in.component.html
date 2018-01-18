@@ -1,3 +1,29 @@
-<p>
-  sign-in works!
-</p>
+<div class="container">
+  <h1>Sign in to Mole-Street</h1>
+  <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <span class="input-group-text">
+          <i class="fa fa-fw fa-at"></i>
+        </span>
+      </div>
+      <input type="text" class="form-control"
+        formControlName="email"
+        placeholder="Fill in your email address"
+        required>
+    </div>
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <span class="input-group-text">
+          <i class="fa fa-fw fa-key"></i>
+        </span>
+      </div>
+      <input type="password" class="form-control"
+        formControlName="password"
+        placeholder="Fill in your password"
+        required>
+    </div>
+    <button class="btn btn-primary" type="submit"
+      [disabled]="!form.valid">Sign-in</button>
+  </form>
+</div>
