@@ -11,6 +11,8 @@ import { UsersService } from '../users/users.service';
 export class SignInComponent implements OnInit {
 
   form: FormGroup;
+  message: string;
+  loaded: boolean;
 
   constructor(
     private fb: FormBuilder,
@@ -18,6 +20,7 @@ export class SignInComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.loaded = false;
     this.initForm();
   }
 
@@ -31,7 +34,12 @@ export class SignInComponent implements OnInit {
   onSubmit() {
     this.usersService.getAccessToken(this.form.value.email, this.form.value.password)
       .subscribe(token => {
-        console.log(token);
+        this.loaded = true;
+        if (!token) {
+          this.message = 'Wrong credentials.';
+        } else {
+          this.message = null;
+        }
       });
   }
 

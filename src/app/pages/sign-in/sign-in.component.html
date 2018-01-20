@@ -1,5 +1,8 @@
 <div class="container">
   <h1>Sign in to Mole-Street</h1>
+  <p class="alert alert-danger" *ngIf="message">
+    {{message}}
+  </p>
   <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
     <div class="input-group">
       <div class="input-group-prepend">
