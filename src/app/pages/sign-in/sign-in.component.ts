@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { UsersService } from '../users/users.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-sign-in',
@@ -16,7 +16,7 @@ export class SignInComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private usersService: UsersService
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
@@ -32,12 +32,13 @@ export class SignInComponent implements OnInit {
   }
 
   onSubmit() {
-    this.usersService.getAccessToken(this.form.value.email, this.form.value.password)
+    this.authService.getAccessToken(this.form.value.email, this.form.value.password)
       .subscribe(token => {
         this.loaded = true;
         if (!token) {
           this.message = 'Wrong credentials.';
         } else {
+          this.authService.setAccessToken(token);
           this.message = null;
         }
       });
