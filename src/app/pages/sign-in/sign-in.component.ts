@@ -37,16 +37,18 @@ export class SignInComponent implements OnInit {
 
   onSubmit() {
     this.loading = true;
-    this.authService.getAccessToken(this.form.value.email, this.form.value.password)
-      .subscribe(token => {
+    this.authService.signIn({
+      email: this.form.value.email,
+      password: this.form.value.password
+    })
+      .subscribe(signedIn => {
         this.loaded = true;
         this.loading = false;
-        if (!token) {
+        if (!signedIn) {
           this.message = 'Wrong credentials.';
         } else {
-          this.authService.setAccessToken(token);
           this.message = null;
-          this.router.navigate(['']);
+          this.router.navigate(['dashboard']);
         }
       });
   }

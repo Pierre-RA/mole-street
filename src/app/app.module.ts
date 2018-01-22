@@ -20,6 +20,7 @@ import { AppComponent } from './app.component';
       { path: '', loadChildren: './pages/landing/landing.module#LandingModule', pathMatch: 'full'},
       { path: 'sign-in', loadChildren: './pages/sign-in/sign-in.module#SignInModule', pathMatch: 'full' },
       { path: 'sign-up', loadChildren: './pages/sign-up/sign-up.module#SignUpModule', pathMatch: 'full' },
+      { path: 'dashboard', loadChildren: './pages/dashboard/dashboard.module#DashboardModule', pathMatch: 'full' },
       { path: 'users', loadChildren: './pages/users/users-list/users-list.module#UsersListModule', pathMatch: 'full' },
       { path: 'users/:id', loadChildren: './pages/users/users-item/users-item.module#UsersItemModule', pathMatch: 'full' },
       { path: 'quotes', loadChildren: './pages/quotes/stock-list/stock-list.module#StockListModule', pathMatch: 'full'},
