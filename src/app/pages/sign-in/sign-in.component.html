@@ -3,7 +3,7 @@
   <p class="alert alert-danger" *ngIf="message">
     {{message}}
   </p>
-  <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="input-group">
       <div class="input-group-prepend">
         <span class="input-group-text">

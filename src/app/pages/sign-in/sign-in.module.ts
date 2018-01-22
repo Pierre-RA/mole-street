@@ -4,8 +4,6 @@ import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { SignInComponent } from './sign-in.component';
-import { UsersService } from '../users/users.service';
-import { AuthService } from '../../services/auth.service';
 
 @NgModule({
   imports: [
@@ -17,6 +15,6 @@ import { AuthService } from '../../services/auth.service';
     ])
   ],
   declarations: [SignInComponent],
-  providers: [UsersService, AuthService]
+  providers: []
 })
 export class SignInModule { }

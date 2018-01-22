@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { JwtHelper } from 'angular2-jwt';
 
 import { environment } from '../../environments/environment';
 import { Credentials, User } from '../../shared';
@@ -15,11 +16,14 @@ export class AuthService {
   private api: string = environment.api;
   private user: User;
   private sub: BehaviorSubject<User>;
+  private jwtHelper: JwtHelper;
 
   constructor(
     private router: Router,
     private http: HttpClient
-  ) { }
+  ) {
+    this.jwtHelper = new JwtHelper();
+  }
 
   getUser(): Observable<User> {
     return this.sub.asObservable();
@@ -30,6 +34,14 @@ export class AuthService {
       .subscribe(user => {
         this.sub.next(user);
       });
+  }
+
+  getOwnerId(): string {
+    const sessionToken = window.localStorage.getItem('session-token');
+    if (sessionToken) {
+      return this.jwtHelper.decodeToken(sessionToken)['id'];
+    }
+    return null;
   }
 
   isLogged(): Observable<boolean> {

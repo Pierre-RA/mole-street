@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
+import { AuthService } from './services/auth.service';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,7 @@ import { AppComponent } from './app.component';
       { path: 'quote/:id', loadChildren: './pages/quotes/stock-item/stock-item.module#StockItemModule'}
     ])
   ],
-  providers: [],
+  providers: [AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
