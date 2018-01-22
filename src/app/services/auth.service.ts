@@ -25,6 +25,7 @@ export class AuthService {
   ) {
     this.jwtHelper = new JwtHelper();
     this.sub = new BehaviorSubject<User>(null);
+    this.setUser(this.getCurrentToken());
   }
 
   getUser(): Observable<User> {
@@ -34,7 +35,6 @@ export class AuthService {
   setUser(token: string): void {
     this.http.get<User>(this.api + '/users/' + this.getOwnerId())
       .subscribe(user => {
-        console.log(user);
         this.sub.next(user);
       });
   }

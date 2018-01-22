@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 import { DashboardComponent } from './dashboard.component';
-import { AuthService } from '../../services/auth.service';
+import { UsersService } from '../users/users.service';
 
 @NgModule({
   imports: [
@@ -13,6 +13,6 @@ import { AuthService } from '../../services/auth.service';
     ])
   ],
   declarations: [DashboardComponent],
-  providers: [AuthService]
+  providers: [UsersService]
 })
 export class DashboardModule { }

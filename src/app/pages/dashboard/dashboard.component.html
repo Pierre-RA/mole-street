@@ -2,5 +2,16 @@
   <h1>Dashboard</h1>
   <button class="btn btn-link" (click)="signOut()">Sign out</button>
   <h2>Portfolio</h2>
+  <p *ngIf="user">
+    balance: ${{user.balance}}
+  </p>
   <h2>Profile</h2>
+  <p *ngIf="user">
+    name: {{user.name}}
+    <span *ngIf="user.isAdmin">
+      <i class="fa fa-star"></i>
+    </span>
+    <br>
+    email: {{user.email}}
+  </p>
 </div>
