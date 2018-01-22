@@ -14,6 +14,7 @@ import 'rxjs/add/operator/map';
 export class AuthService {
 
   private api: string = environment.api;
+  private tokenKeyName = 'session-token';
   private user: User;
   private sub: BehaviorSubject<User>;
   private jwtHelper: JwtHelper;
@@ -23,6 +24,7 @@ export class AuthService {
     private http: HttpClient
   ) {
     this.jwtHelper = new JwtHelper();
+    this.sub = new BehaviorSubject<User>(null);
   }
 
   getUser(): Observable<User> {
@@ -30,14 +32,15 @@ export class AuthService {
   }
 
   setUser(token: string): void {
-    this.http.get<User>(this.api + '/users')
+    this.http.get<User>(this.api + '/users/' + this.getOwnerId())
       .subscribe(user => {
+        console.log(user);
         this.sub.next(user);
       });
   }
 
   getOwnerId(): string {
-    const sessionToken = window.localStorage.getItem('session-token');
+    const sessionToken = window.localStorage.getItem(this.tokenKeyName);
     if (sessionToken) {
       return this.jwtHelper.decodeToken(sessionToken)['id'];
     }
@@ -74,6 +77,10 @@ export class AuthService {
       .map(res => res['token']);
   }
 
+  getCurrentToken(): string {
+    return window.localStorage.getItem(this.tokenKeyName);
+  }
+
   // TODO: add object for refresh token
   refreshAccessToken(): Observable<string> {
     return this.http.post(
@@ -84,7 +91,7 @@ export class AuthService {
   }
 
   setAccessToken(token: string): void {
-    window.localStorage.setItem('session-token', token);
+    window.localStorage.setItem(this.tokenKeyName, token);
   }
 
   removeAccessToken(): void {
