@@ -96,4 +96,18 @@ router.get('/:id', (req: Request, res: Response) => {
     });
 });
 
+/**
+ * PUT /:id
+ * update user with id
+ */
+router.put('/:id', (req: Request, res: Response) => {
+  DBUser.findOneAndUpdate({ _id: req.params.id }, req.body)
+    .then(doc => {
+      res.json(doc);
+    })
+    .catch(err => {
+      res.status(400).json(err);
+    });
+});
+
 export default router;

@@ -1,7 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { JwtHelper } from 'angular2-jwt';
+import { PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 
 import { environment } from '../../environments/environment';
 import { Credentials, User } from '../../shared';
@@ -21,10 +23,12 @@ export class AuthService {
 
   constructor(
     private router: Router,
-    private http: HttpClient
+    private http: HttpClient,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {
     this.jwtHelper = new JwtHelper();
     this.sub = new BehaviorSubject<User>(null);
+    this.setUser(this.getCurrentToken());
   }
 
   getUser(): Observable<User> {
@@ -32,15 +36,17 @@ export class AuthService {
   }
 
   setUser(token: string): void {
+    if (!this.getOwnerId()) {
+      return;
+    }
     this.http.get<User>(this.api + '/users/' + this.getOwnerId())
       .subscribe(user => {
-        console.log(user);
         this.sub.next(user);
       });
   }
 
   getOwnerId(): string {
-    const sessionToken = window.localStorage.getItem(this.tokenKeyName);
+    const sessionToken = this.getCurrentToken();
     if (sessionToken) {
       return this.jwtHelper.decodeToken(sessionToken)['id'];
     }
@@ -78,7 +84,10 @@ export class AuthService {
   }
 
   getCurrentToken(): string {
-    return window.localStorage.getItem(this.tokenKeyName);
+    if (isPlatformBrowser(this.platformId)) {
+      return window.localStorage.getItem(this.tokenKeyName);
+    }
+    return null;
   }
 
   // TODO: add object for refresh token
@@ -91,11 +100,15 @@ export class AuthService {
   }
 
   setAccessToken(token: string): void {
-    window.localStorage.setItem(this.tokenKeyName, token);
+    if (isPlatformBrowser(this.platformId)) {
+      window.localStorage.setItem(this.tokenKeyName, token);
+    }
   }
 
   removeAccessToken(): void {
-    window.localStorage.clear();
+    if (isPlatformBrowser(this.platformId)) {
+      window.localStorage.clear();
+    }
   }
 
 }

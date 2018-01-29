@@ -2,5 +2,43 @@
   <h1>Dashboard</h1>
   <button class="btn btn-link" (click)="signOut()">Sign out</button>
   <h2>Portfolio</h2>
+  <p *ngIf="user">
+    balance: $ {{user.balance | number : '1.2-2'}}
+  </p>
   <h2>Profile</h2>
+  <button class="btn btn-link" *ngIf="user" (click)="toggleEdition()">
+    <i class="fa fa-pencil" *ngIf="!isEditing"></i>
+    <i class="fa fa-save" *ngIf="isEditing"></i>
+  </button>
+  
+  <form [formGroup]="form" *ngIf="user">
+    <ng-container *ngIf="!isEditing">
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Name</label>
+        <div class="col-sm-10">
+          <input type="text" readonly class="form-control-plaintext" formControlName="name">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Email</label>
+        <div class="col-sm-10">
+          <input type="text" readonly class="form-control-plaintext" formControlName="email">
+        </div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="isEditing">
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Name</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" formControlName="name">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Email</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" formControlName="email">
+        </div>
+      </div>
+    </ng-container>
+  </form>
 </div>

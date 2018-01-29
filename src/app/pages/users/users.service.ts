@@ -21,9 +21,9 @@ export class UsersService {
     );
   }
 
-  update(user: User): Observable<User> {
+  update(user: User, id: string): Observable<User> {
     return this.http.put<User>(
-      this.api + '/users',
+      this.api + '/users/' + id,
       user, {
       headers: new HttpHeaders().set('Authorization', 'JWT ' + window.localStorage.getItem('session-token'))
     });
