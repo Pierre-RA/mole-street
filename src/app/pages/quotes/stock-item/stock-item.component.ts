@@ -32,7 +32,7 @@ export class StockItemComponent implements OnInit {
       this.quoteService.getQuote(this.activatedRoute.snapshot.params['id']).subscribe(data => {
         this.loaded = true;
         this.stocks = data;
-        this.parseStocks();
+        this.parseStocks(1);
       }, err => {
         this.loaded = true;
         this.message = 'Cannot fetch data.';
@@ -40,31 +40,35 @@ export class StockItemComponent implements OnInit {
     }
   }
 
-  parseStocks() {
-    let tmp;
-    tmp = [];
-    const date = new Date(this.stocks[0].date);
-    let day = '(' + (date.getMonth() + 1) +
-      ' - ' + date.getDate() + ')';
-    for (let i = 8; i < 17; i++) {
-      for (let j = 0; j < 4; j++) {
-        if (this.stocks[0].hours[i] && this.stocks[0].hours[i][j] && this.stocks[0].hours[i][j].last) {
-          day = tmp.length === 0 ? day : '';
-          tmp.push({
-            name: i + ':' + (j * 15),
-            value: this.stocks[0].hours[i][j].last
-          });
-        }
-      }
-    }
+  parseStocks(length: number) {
+    let tmp = [];
+    this.stocks.slice(0, length).reverse().forEach(quote => {
+      tmp = tmp.concat(this.parseQuote(quote));
+    });
     this.results = [{
       name: this.stocks[0].symbol || 'N/A',
       series: tmp
     }];
   }
 
+  parseQuote(quote: DailyQuote) {
+    const tmp = [];
+    const date = new Date(quote.date).getTime();
+    for (let i = 8; i < 17; i++) {
+      for (let j = 0; j < 4; j++) {
+        if (quote.hours[i] && quote.hours[i][j] && quote.hours[i][j].last) {
+          tmp.push({
+            name: new Date(date + (j * 60 * 10 * 1000) + (i * 3600 * 1000)).toISOString(),
+            value: quote.hours[i][j].last
+          });
+        }
+      }
+    }
+    return tmp;
+  }
+
   xAxisTickFormatting(value) {
-    return this.datePipe.transform(value, 'short');
+    return new Date(value).toISOString();
   }
 
 }
