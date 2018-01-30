@@ -101,6 +101,9 @@ router.get('/:id', (req: Request, res: Response) => {
  * update user with id
  */
 router.put('/:id', (req: Request, res: Response) => {
+  delete req.body.balance;
+  delete req.body.portfolio;
+  delete req.body.isAdmin;
   DBUser.findOneAndUpdate({ _id: req.params.id }, req.body)
     .then(doc => {
       res.json(doc);
