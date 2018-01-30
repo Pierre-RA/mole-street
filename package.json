@@ -7,7 +7,7 @@
     "url": "https://github.com/angular/universal-starter.git"
   },
   "contributors": [
-    "Pierre Repetto-Andipatin <pierre@anthillsolutions.ch>"
+    "Pierre Repetto-Andipatin <pierre@anthillsolutions.net>"
   ],
   "scripts": {
     "ng": "ng",
