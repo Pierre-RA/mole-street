@@ -19,7 +19,7 @@ export let userSchema = new Mongoose.Schema({
   },
   balance: Number,
   portfolio: [{
-    initials: String,
+    symbol: String,
     amount: Number,
     price: Number,
     timestamp: String
