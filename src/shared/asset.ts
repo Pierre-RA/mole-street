@@ -1,5 +1,5 @@
 export interface Asset {
-  initials: string;
+  symbol: string;
   amount: number;
   price: number;
   timestamp: string;
