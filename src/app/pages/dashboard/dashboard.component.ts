@@ -16,6 +16,7 @@ export class DashboardComponent implements OnInit {
   user: User;
   isEditing: boolean;
   form: FormGroup;
+  totalValue: number;
 
   constructor(
     private router: Router,
@@ -35,6 +36,7 @@ export class DashboardComponent implements OnInit {
       .subscribe(user => {
         this.user = user;
         this.setupUser();
+        this.getTotalValue();
       });
   }
 
@@ -74,6 +76,19 @@ export class DashboardComponent implements OnInit {
           console.log('worked');
         }
       });
+  }
+
+  getTotalValue(): void {
+    if (this.user) {
+      this.totalValue = this.user.portfolio.reduce((acc, current) => {
+        return {
+          symbol: 'total',
+          amount: 0,
+          price: acc.price + current.price,
+          timestamp: current.timestamp
+        };
+      }).price;
+    }
   }
 
 }
