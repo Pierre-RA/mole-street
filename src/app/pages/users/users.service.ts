@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { environment } from '../../../environments/environment';
-import { User } from '../../../shared';
+import { Asset, User } from '../../../shared';
 
 import { Observable } from 'rxjs/Observable';
 
@@ -39,6 +39,21 @@ export class UsersService {
   getUser(id: string): Observable<User> {
     return this.http.get<User>(
       this.api + '/users/' + id, {
+      headers: new HttpHeaders().set('Authorization', 'JWT ' + window.localStorage.getItem('session-token'))
+    });
+  }
+
+  buy(id: string, asset: Asset): Observable<User> {
+    console.log('buy');
+    return this.http.put<User>(
+      this.api + '/users/buy/' + id, asset, {
+      headers: new HttpHeaders().set('Authorization', 'JWT ' + window.localStorage.getItem('session-token'))
+    });
+  }
+
+  sell(id: string, asset: Asset): Observable<User> {
+    return this.http.put<User>(
+      this.api + '/users/sell/' + id, asset, {
       headers: new HttpHeaders().set('Authorization', 'JWT ' + window.localStorage.getItem('session-token'))
     });
   }

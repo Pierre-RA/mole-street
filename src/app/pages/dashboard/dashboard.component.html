@@ -5,6 +5,90 @@
   <p *ngIf="user">
     balance: $ {{user.balance | number : '1.2-2'}}
   </p>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>
+          Action
+        </th>
+        <th>
+          Symbol
+        </th>
+        <th>
+          Name
+        </th>
+        <th>
+          Price
+        </th>
+        <th>
+          Shares
+        </th>
+        <th>
+          Value
+        </th>
+        <th>
+          Delta
+        </th>
+      </tr>
+    </thead>
+    <tbody *ngIf="user && user.portfolio">
+      <tr *ngFor="let asset of user.portfolio">
+        <td>
+          <a [routerLink]="['/quote', asset.symbol]" [queryParams]="{action: 'buy'}" class="btn btn-sm btn-outline-success">
+            <i class="fa fa-plus"></i>
+          </a>
+          <a [routerLink]="['/quote', asset.symbol]" [queryParams]="{action: 'sell'}" class="btn btn-sm btn-outline-danger">
+            <i class="fa fa-minus"></i>
+          </a>
+        </td>
+        <td>
+          {{asset.symbol}}
+        </td>
+        <td>
+          N/A
+        </td>
+        <td>
+          {{N/A}}
+        </td>
+        <td>
+          {{asset.amount}}
+        </td>
+        <td>
+          {{asset.price | number : '1.2-2'}}
+        </td>
+        <td>
+          N/A
+        </td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <th colspan="5" class="text-right">
+          Total trade value
+        </th>
+        <td colspan="2" class="text-right">
+          $ {{totalValue | number : '1.2-2'}}
+        </td>
+      </tr>
+      <tr>
+        <th colspan="5" class="text-right">
+          Delta
+        </th>
+        <td colspan="2" class="text-right">
+          N/A
+        </td>
+      </tr>
+      <tr>
+        <th colspan="5" class="text-right">
+          Expected total value
+        </th>
+        <td colspan="2" class="text-right">
+          N/A
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+
   <h2>Profile</h2>
   <button class="btn btn-link" *ngIf="user" (click)="toggleEdition()">
     <i class="fa fa-pencil" *ngIf="!isEditing"></i>

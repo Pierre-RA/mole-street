@@ -1,26 +1,31 @@
 <div class="container">
   <app-template-quote
     [quote]="stocks[0]"
+    [action]="action"
+    (editted)="onEditted($event)"
     *ngIf="stocks && stocks[0]">
   </app-template-quote>
-  
-  <div>
-    <button (click)="parseStocks(1)">1D</button>
-    <button (click)="parseStocks(7)">1W</button>
-    <button (click)="parseStocks(365)">1Y</button>
-  </div>
-
-  <ngx-charts-area-chart
-    [scheme]="colorScheme"
-    [results]="results"
-    gradient="true"
-    xAxis="true"
-    yAxis="true"
-    autoScale="true" *ngIf="results && results[0]">
-  </ngx-charts-area-chart>
 
   <div *ngIf="message">
     {{message}}
+  </div>
+
+  <div *ngIf="!isEditing" class="chart">
+    <div>
+      <button (click)="parseStocks(1)">1D</button>
+      <button (click)="parseStocks(7)">1W</button>
+      <button (click)="parseStocks(365)">1Y</button>
+      <button (click)="buy()">buy</button>
+      <button (click)="sell()">sell</button>
+    </div>
+    <ngx-charts-area-chart
+      [scheme]="colorScheme"
+      [results]="results"
+      gradient="true"
+      xAxis="true"
+      yAxis="true"
+      autoScale="true" *ngIf="results && results[0]">
+    </ngx-charts-area-chart>
   </div>
 </div>
 
