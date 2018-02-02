@@ -79,7 +79,8 @@ export class DashboardComponent implements OnInit {
   }
 
   getTotalValue(): void {
-    if (this.user) {
+    this.totalValue = 0;
+    if (this.user && this.user.portfolio && this.user.portfolio.length > 0) {
       this.totalValue = this.user.portfolio.reduce((acc, current) => {
         return {
           symbol: 'total',

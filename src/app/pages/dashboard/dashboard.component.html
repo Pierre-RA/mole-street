@@ -34,12 +34,12 @@
     <tbody *ngIf="user && user.portfolio">
       <tr *ngFor="let asset of user.portfolio">
         <td>
-          <button class="btn btn-sm btn-outline-success">
+          <a [routerLink]="['/quote', asset.symbol]" [queryParams]="{action: 'buy'}" class="btn btn-sm btn-outline-success">
             <i class="fa fa-plus"></i>
-          </button>
-          <button class="btn btn-sm btn-outline-danger">
+          </a>
+          <a [routerLink]="['/quote', asset.symbol]" [queryParams]="{action: 'sell'}" class="btn btn-sm btn-outline-danger">
             <i class="fa fa-minus"></i>
-          </button>
+          </a>
         </td>
         <td>
           {{asset.symbol}}

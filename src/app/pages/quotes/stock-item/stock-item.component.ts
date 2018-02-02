@@ -15,7 +15,9 @@ export class StockItemComponent implements OnInit {
   stocks: Array<DailyQuote>;
   results: Array<Chart>;
   loaded: boolean;
+  isEditing: boolean;
   message: string;
+  action: string;
 
   colorScheme = {
     domain: ['#2288ee']
@@ -37,6 +39,10 @@ export class StockItemComponent implements OnInit {
         this.loaded = true;
         this.message = 'Cannot fetch data.';
       });
+    }
+    if (this.activatedRoute.snapshot.queryParams['action']) {
+      this.isEditing = true;
+      this.action = this.activatedRoute.snapshot.queryParams['action'];
     }
   }
 
@@ -69,6 +75,21 @@ export class StockItemComponent implements OnInit {
 
   xAxisTickFormatting(value) {
     return new Date(value).toISOString();
+  }
+
+  buy() {
+    this.isEditing = true;
+    this.action = 'buy';
+  }
+
+  sell() {
+    this.isEditing = true;
+    this.action = 'sell';
+  }
+
+  onEditted(event: boolean) {
+    this.isEditing = false;
+    this.action = null;
   }
 
 }

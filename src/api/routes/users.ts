@@ -160,12 +160,14 @@ router.put('/sell/:id', (req: Request, res: Response) => {
     })
     .then(doc => {
       const quote: SixthlyQuote = getLastQuote(doc);
-      let amount = req.body.amount < 0 ? 0 : req.body.amount;
+      console.log(req.body.amount);
+      let amount = +req.body.amount < 0 ? 0 : +req.body.amount;
       const asset = getAssetIndex(user.portfolio, doc.symbol);
-      if (asset !== -1) {
+      if (asset === -1) {
         throw new Error('no-asset');
       }
-      amount = amount > user.portfolio[asset].amount ? user.portfolio[asset].amount : amount;
+      amount = amount > user.portfolio[asset].amount ?
+        user.portfolio[asset].amount : amount;
       const price = quote.last * amount;
 
       user.portfolio[asset].amount -= amount;
@@ -175,6 +177,7 @@ router.put('/sell/:id', (req: Request, res: Response) => {
       if (user.portfolio[asset].amount === 0) {
         user.portfolio.splice(asset, 1);
       }
+      console.log(amount, price);
       return DBUser.findOneAndUpdate({ _id: req.params.id }, user, {new: true});
     })
     .then(doc => {
