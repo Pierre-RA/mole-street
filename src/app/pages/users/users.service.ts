@@ -13,6 +13,10 @@ export class UsersService {
 
   constructor(private http: HttpClient) { }
 
+  getAPIURL(): string {
+    return this.api;
+  }
+
   // TODO: add object for registration
   register(): Observable<User> {
     return this.http.post<User>(

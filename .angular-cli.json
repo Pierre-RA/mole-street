@@ -80,9 +80,6 @@
     },
     "defaults": {
       "styleExt": "scss",
-      "component": {
-        "spec": false
-      },
       "directive": {
         "spec": false
       },
@@ -96,9 +93,6 @@
         "spec": false
       },
       "pipe": {
-        "spec": false
-      },
-      "service": {
         "spec": false
       }
     }

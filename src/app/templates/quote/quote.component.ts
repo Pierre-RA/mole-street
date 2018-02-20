@@ -60,6 +60,9 @@ export class QuoteComponent implements OnInit {
   }
 
    setLast(): void {
+    if (!this.quote) {
+      return;
+    }
     let last: SixthlyQuote;
     const time: Date = new Date(this.quote.date);
     for (let i = 8; i < 17; i++) {

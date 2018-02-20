@@ -31,6 +31,10 @@ export class AuthService {
     this.setUser(this.getCurrentToken());
   }
 
+  getAPIURL(): string {
+    return this.api;
+  }
+
   getUser(): Observable<User> {
     return this.sub.asObservable();
   }
